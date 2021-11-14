@@ -4729,10 +4729,10 @@ qs@6.7.0:
   resolved "https://registry.nlark.com/qs/download/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha1-QdwaAV49WB8WIXdr4xr7KHapsbw=
 
-quasar@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.npmmirror.com/quasar/download/quasar-2.3.1.tgz#25105604ce1cf41098c8dd50e68e7bef363f6c05"
-  integrity sha512-EK9x9xl+lB2uHyYW51bKXKB2nn5ipa4rpqPBDrdYL0me4q9l37/WYL9n6DZDa+pdnzmtymwebpWcOrB3w8UEZA==
+quasar@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/quasar/-/quasar-2.3.2.tgz#c321c2424e05bcba6ea94e8b0252bf16b34a8571"
+  integrity sha512-YqmKj3DKN1MWmjZVYXsjvoTjKS5GVwucK+tzIm3fNIybeV4GVp5YY8RXY5uQehMhZecmY24iKfJaS6tQwFHSQw==
 
 querystring@0.2.0:
   version "0.2.0"
