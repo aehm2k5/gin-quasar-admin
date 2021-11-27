@@ -5,27 +5,31 @@
             <q-btn color="negative" :disable="row.roleCode === 'super-admin'" @click="handleAll">全部选择</q-btn>
             <q-btn color="primary" :disable="row.roleCode === 'super-admin'" @click="handleRoleApi">保存菜单权限</q-btn>
         </div>
-        <q-card-section style="width: 100%; max-height: 45vw" class="scroll">
+        <q-card-section style="width: 100%; max-height: 35vw" class="scroll">
             <q-tree :nodes="apiData" default-expand-all node-key="trueId" selected-color="primary"
                 v-if="tableData.length !== 0" tick-strategy="strict" v-model:ticked="ticked">
                 <template v-slot:default-header="prop">
                     <div class="row items-center">
-                        <q-chip color="primary" dense>
-                            {{ prop.node.group }}
+                        <q-chip color="accent" text-color="white" dense
+                            v-if="prop.node.apiGroup.substring(0, 7)=== 'plugin-'">
+                            {{ prop.node.apiGroup }}
                         </q-chip>
-                        <q-chip color="primary" dense v-if="prop.node.method=== 'POST'">
-                            {{ prop.node.method }}
+                        <q-chip color="primary" text-color="white" dense v-else>
+                            {{ prop.node.apiGroup }}
                         </q-chip>
-                        <q-chip color="positive" dense v-if="prop.node.method=== 'GET'">
-                            {{ prop.node.method }}
+                        <q-chip color="primary" text-color="white" dense v-if="prop.node.apiMethod=== 'POST'">
+                            {{ prop.node.apiMethod }}
                         </q-chip>
-                        <q-chip color="negative" dense v-if="prop.node.method=== 'DELETE'">
-                            {{ prop.node.method }}
+                        <q-chip color="positive" text-color="white" dense v-if="prop.node.apiMethod=== 'GET'">
+                            {{ prop.node.apiMethod }}
                         </q-chip>
-                        <q-chip color="warning" dense v-if="prop.node.method=== 'PUT'">
-                            {{ prop.node.method }}
+                        <q-chip color="negative" text-color="white" dense v-if="prop.node.apiMethod=== 'DELETE'">
+                            {{ prop.node.apiMethod }}
                         </q-chip>
-                        <div class="text-weight-bold">{{ prop.node.path }}</div>
+                        <q-chip color="warning" text-color="white" dense v-if="prop.node.apiMethod=== 'PUT'">
+                            {{ prop.node.apiMethod }}
+                        </q-chip>
+                        <div class="text-weight-bold">{{ prop.node.apiPath }}</div>
                         <span class="text-weight-light text-black">
                             （{{ prop.node.remark}}）
                         </span>
@@ -55,14 +59,14 @@ export default {
     computed: {
         apiData() {
             if (this.tableData.length) {
-                if (this.row.roleCode === 'super-admin') {
-                    for (let i of this.tableData) {
-                        i.disabled = true
-                    }
-                }
+                // if (this.row.roleCode === 'super-admin') {
+                //     for (let i of this.tableData) {
+                //         i.disabled = true
+                //     }
+                // }
                 const data = this.tableData
                 for (let item of data) {
-                    item.trueId = 'p:' + item.path + 'm:' + item.method
+                    item.trueId = 'p:' + item.apiPath + 'm:' + item.apiMethod
                 }
                 return data
             }
@@ -110,8 +114,8 @@ export default {
                 for (let t of this.ticked) {
                     if (t === item.trueId) {
                         policy.push({
-                            V1: item.path,
-                            V2: item.method,
+                            V1: item.apiPath,
+                            V2: item.apiMethod,
                         })
                     }
                 }
@@ -129,8 +133,14 @@ export default {
                 }
             })
         },
-        handleClear() {},
-        handleAll() {},
+        handleClear() {
+            this.ticked = []
+        },
+        handleAll() {
+            this.tableData.forEach((item) => {
+                this.ticked.push('p:' + item.apiPath + 'm:' + item.apiMethod)
+            })
+        },
     },
 }
 </script>

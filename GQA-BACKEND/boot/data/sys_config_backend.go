@@ -21,7 +21,7 @@ var sysConfigBackendData = []system.SysConfigBackend{
 		GqaOption: "defaultPassword", Default: "123456",
 	},
 	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 3, Remark: "验证码字符数", CreatedAt: time.Now(), CreatedBy: "admin"},
-		GqaOption: "captchaKeyLong", Default: "6",
+		GqaOption: "captchaKeyLong", Default: "4",
 	},
 	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 4, Remark: "验证码宽度", CreatedAt: time.Now(), CreatedBy: "admin"},
 		GqaOption: "captchaWidth", Default: "240",
@@ -50,22 +50,28 @@ var sysConfigBackendData = []system.SysConfigBackend{
 	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 12, Remark: "文件允许后缀", CreatedAt: time.Now(), CreatedBy: "admin"},
 		GqaOption: "fileExt", Default: ".png,.jpg,.docx,.xlsx,.txt,.doc,.xls",
 	},
+	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 13, Remark: "网站Logo最大上传（M）", CreatedAt: time.Now(), CreatedBy: "admin"},
+		GqaOption: "webLogoMaxSize", Default: "2",
+	},
+	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 14, Remark: "网站Logo允许后缀", CreatedAt: time.Now(), CreatedBy: "admin"},
+		GqaOption: "webLogoExt", Default: ".ico,.png,.jpg",
+	},
 }
 
-func (s *sysConfigBackend) Init() error {
+func (s *sysConfigBackend) LoadData() error {
 	return global.GqaDb.Transaction(func(tx *gorm.DB) error {
 		var count int64
 		tx.Model(&system.SysConfigBackend{}).Count(&count)
 		if count != 0 {
 			fmt.Println("[Gin-Quasar-Admin] --> sys_config_backend 表的初始数据已存在，跳过初始化数据！数据量：", count)
-			global.GqaLog.Error("sys_config_backend 表的初始数据已存在，跳过初始化数据！", zap.Any("数据量", count))
+			global.GqaLog.Error("[Gin-Quasar-Admin] --> sys_config_backend 表的初始数据已存在，跳过初始化数据！", zap.Any("数据量", count))
 			return nil
 		}
 		if err := tx.Create(&sysConfigBackendData).Error; err != nil { // 遇到错误时回滚事务
 			return err
 		}
 		fmt.Println("[Gin-Quasar-Admin] --> sys_config_backend 表初始数据成功！")
-		global.GqaLog.Error("sys_config 表初始数据成功！")
+		global.GqaLog.Error("[Gin-Quasar-Admin] --> sys_config_backend 表初始数据成功！")
 		return nil
 	})
 }

@@ -3,35 +3,29 @@
         <q-header reveal elevated>
             <!-- <div class="row no-wrap shadow-1"> -->
             <q-toolbar class="bg-primary glossy ">
-                <q-btn flat dense round icon=" sync_alt" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
+                <q-btn dense round glossy push icon="sync_alt" aria-label="Menu"
+                    @click="toggleLeftDrawer = !toggleLeftDrawer" />
 
-                <q-avatar class="gin-quasar-admin-logo">
-                    <img src="gqa128.png" />
-                </q-avatar>
+                <GqaAvatar class="gin-quasar-admin-logo" :src="gqaFrontend.gqaWebLogo" />
 
                 <q-toolbar-title shrink class="text-bold text-italic">
-                    Gin-Quasar-Admin
+                    {{ gqaFrontend.gqaSubTitle }}
                 </q-toolbar-title>
 
-                <!-- <TabMenu /> -->
-                <!-- </q-toolbar>
+                <q-tabs dense inline-label outside-arrows mobile-arrows shrink stretch v-model="currentItemMenu"
+                    style="max-width: 50%;" class="text-white">
+                    <q-tab v-for="item in topMenu" :key="item.top.name" :icon="item.top.icon" :name="item.top.name"
+                        :label="item.top.title" @click="changeTopMenu(item)" />
+                </q-tabs>
 
-                <q-toolbar class="bg-primary glossy col-4"> -->
                 <q-space />
-                <!-- 简易面包屑 -->
-                <!-- <q-breadcrumbs active-color="white" style="font-size: 13px; margin-left: 20px">
-                    <q-breadcrumbs-el :label="item.title" :icon="item.icon"
-                        v-for="item in matched.slice(1, matched.length)" :key="item.path" />
-                    </q-breadcrumbs> -->
 
                 <Fullscreen style="margin: 0 5px" />
-
                 <Notice style="margin: 0 5px" />
-
                 <UserMenu style="margin: 0 5px" />
                 <!-- <q-language-switcher/> -->
                 <Setting style="margin: 0 5px" />
-                <GitLink style="margin: 0 5px" />
+                <GitLink style="margin: 0 5px" v-if="gqaFrontend.gqaShowGit === 'yes'" />
 
             </q-toolbar>
             <!-- </div> -->
@@ -39,24 +33,23 @@
             <!-- header下面的标签页 -->
             <div class="row bg-primary">
                 <!-- <ChipMenu /> -->
-                <TabMenu />
+                <TabMenu v-show="!pageDashboard" />
             </div>
 
         </q-header>
 
-        <q-drawer elevated v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
-            <q-list>
-                <q-item clickable v-ripple>
-                    <q-item-section class="text-primary text-bold text-center">
-                        欢迎访问Gin-Quasar-Admin！
-                    </q-item-section>
-                </q-item>
-                <SideBarLeft />
-            </q-list>
+        <q-drawer elevated v-if="!pageDashboard" v-model="toggleLeftDrawer" show-if-above bordered
+            content-class="bg-grey-1">
+
+            <SideBarLeft :topMenuItem="topMenuItem" />
+
         </q-drawer>
 
         <q-page-container>
             <router-view />
+            <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
+                <q-btn dense fab push icon="keyboard_arrow_up" color="primary" />
+            </q-page-scroller>
         </q-page-container>
 
         <q-footer reveal elevated>
@@ -66,6 +59,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { gqaFrontendMixin } from 'src/mixins/gqaFrontendMixin'
 import SideBarLeft from './SideBarLeft'
 import TabMenu from './TabMenu'
 import Fullscreen from './Fullscreen'
@@ -74,9 +69,11 @@ import GitLink from './GitLink'
 import UserMenu from './UserMenu'
 import Setting from './Setting'
 import PageFooter from './PageFooter'
+import GqaAvatar from 'src/components/GqaAvatar'
 
 export default {
     name: 'MainLayout',
+    mixins: [gqaFrontendMixin],
     components: {
         SideBarLeft,
         TabMenu,
@@ -86,16 +83,54 @@ export default {
         UserMenu,
         Setting,
         PageFooter,
+        GqaAvatar,
     },
     computed: {
-        matched() {
-            return this.$route.matched
+        ...mapGetters({
+            topMenu: 'permission/topMenu',
+        }),
+        pageDashboard() {
+            const menu = this.topMenuItem.top.name === 'dashboard' || JSON.stringify(this.topMenuItem) === '{}'
+            if (this.$route.name === 'dashboard' && menu) {
+                return true
+            }
+            return false
+        },
+        findTopItemMenu() {
+            const name = this.$route.name
+            let item = {}
+            for (let m of this.topMenu) {
+                if (m.top.name === name || (m.arrayChildren && m.arrayChildren.find((item) => item.name === name))) {
+                    item = m
+                    break
+                }
+            }
+            this.currentItemMenu = item.top ? item.top.name : {}
+            return item
+        },
+    },
+    watch: {
+        $route() {
+            this.topMenuItem = this.findTopItemMenu
         },
     },
     data() {
         return {
-            leftDrawerOpen: false,
+            toggleLeftDrawer: false,
+            topMenuItem: {},
+            currentItemMenu: 'dashboard',
         }
+    },
+    created() {
+        this.topMenuItem = this.findTopItemMenu
+    },
+    methods: {
+        changeTopMenu(item) {
+            if (item.top.name === 'dashboard') {
+                this.$router.push('/dashboard')
+            }
+            this.topMenuItem = item
+        },
     },
 }
 </script>

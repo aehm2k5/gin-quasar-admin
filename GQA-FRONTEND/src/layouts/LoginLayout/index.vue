@@ -5,11 +5,13 @@
             <page-banner :checkDbStatus="checkDbStatus" ref="pageBanner" />
             <page-news />
             <page-project />
-            <!-- <page-honour /> -->
             <page-weapon />
-            <page-document />
-            <page-download />
+            <page-honour />
+            <page-resource />
             <page-footer />
+            <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
+                <q-btn dense fab push icon="keyboard_arrow_up" color="primary" />
+            </q-page-scroller>
         </q-page-container>
         <q-dialog v-model="initDbVisible" persistent>
             <q-card style="width: 100%; max-width: 50vw">
@@ -18,13 +20,30 @@
                         <img src="gqa128.png" />
                     </q-avatar>
 
-                    <q-toolbar-title>
+                    <q-toolbar-title class="row justify-between items-center">
                         <span class="text-weight-bold">
                             欢迎使用 Gin-Quasar-Admin！
                         </span>
-                    </q-toolbar-title>
+                        <span class="q-gutter-md">
+                            <q-btn dense push rounded glossy color="primary"
+                                @click="openLink('https://gitee.com/junvary/gin-quasar-admin')">
+                                访问Gitee
+                            </q-btn>
+                            <q-btn dense push rounded glossy color="primary"
+                                @click="openLink('https://github.com/Junvary/gin-quasar-admin')">
+                                访问Github
+                            </q-btn>
 
+                            <q-btn dense push rounded glossy color="primary">
+                                查看版本信息
+                                <GqaVersion />
+                            </q-btn>
+                        </span>
+                    </q-toolbar-title>
                 </q-toolbar>
+
+                <GqaPluginList />
+
                 <q-card-section>
                     <q-form class="text-center" ref="initDbForm">
                         <q-stepper v-model="step" ref="stepper" color="primary" animated>
@@ -32,12 +51,14 @@
                             <q-step :name="1" title="欢迎" icon="home" :done="step > 1">
                                 <div class="text-h5 column text-center q-gutter-md">
                                     <span class="col">
-                                        嘿,看起来这是你第一次使用 Gin-Quasar-Admin
+                                        嘿，看起来这是你第一次运行 Gin-Quasar-Admin！
                                     </span>
                                     <span class="col">
                                         首先你需要
-                                        <span class="text-red">初始化数据库</span>，
-                                        后续根据提示进行网站
+                                        <span class="text-red">初始化数据库</span>
+                                    </span>
+                                    <span class="col">
+                                        后续使用管理员账户进行
                                         <span class="text-red">个性化配置</span>
                                     </span>
                                     <span class="col">
@@ -48,12 +69,13 @@
 
                             <q-step :name="2" title="初始化数据库" icon="settings" :done="step > 2">
                                 <div class="q-gutter-y-md column">
-                                    <span class="col text-red text-h6">
-                                        首先，你需要对数据库进行初始化，请确保已经安装并启动了数据库
+                                    <span class="col text-red text-h7">
+                                        首先需要对数据库进行初始化，请确保已经安装并启动了数据库
                                     </span>
                                     <span class="col text-red text-h7">
-                                        *系统会为你自动创建数据库*
+                                        系统会为你自动创建数据库，并导入初始数据。
                                     </span>
+
                                     <q-input outlined bottom-slots v-model.trim="form.dbType" label="数据库类型" disable
                                         :rules="[(val) =>(val && val.length > 0) || '请输入数据库类型',]">
                                         <template v-slot:before>
@@ -65,39 +87,46 @@
                                             只支持Mysql
                                         </template>
                                     </q-input>
-                                    <q-input outlined v-model.trim="form.host" label="数据库地址"
-                                        :rules="[(val) =>(val && val.length > 0) || '请输入数据库地址',]">
-                                        <template v-slot:before>
-                                            <q-avatar class="gin-quasar-admin-logo">
-                                                <img src="gqa128.png" />
-                                            </q-avatar>
-                                        </template>
-                                    </q-input>
-                                    <q-input outlined v-model.trim="form.port" label="数据库端口"
-                                        :rules="[(val) =>(val && val.length > 0) || '请输入数据库端口',]">
-                                        <template v-slot:before>
-                                            <q-avatar class="gin-quasar-admin-logo">
-                                                <img src="gqa128.png" />
-                                            </q-avatar>
-                                        </template>
-                                    </q-input>
-                                    <q-input outlined v-model.trim="form.username" label="数据库用户名"
-                                        :rules="[(val) =>(val && val.length > 0) || '请输入数据库用户名',]">
-                                        <template v-slot:before>
-                                            <q-avatar class="gin-quasar-admin-logo">
-                                                <img src="gqa128.png" />
-                                            </q-avatar>
-                                        </template>
-                                    </q-input>
-                                    <q-input outlined v-model.trim="form.password" label="数据库密码"
-                                        :rules="[(val) =>(val && val.length > 0) || '请输入数据库密码',]">
-                                        <template v-slot:before>
-                                            <q-avatar class="gin-quasar-admin-logo">
-                                                <img src="gqa128.png" />
-                                            </q-avatar>
-                                        </template>
-                                    </q-input>
-                                    <q-input outlined v-model.trim="form.dbName" label="数据库/Schema名称"
+
+                                    <div class="row">
+                                        <q-input class="col" outlined v-model.trim="form.host" label="数据库地址"
+                                            :rules="[(val) =>(val && val.length > 0) || '请输入数据库地址',]">
+                                            <template v-slot:before>
+                                                <q-avatar class="gin-quasar-admin-logo">
+                                                    <img src="gqa128.png" />
+                                                </q-avatar>
+                                            </template>
+                                        </q-input>
+                                        <q-input class="col" outlined v-model.trim="form.port" label="数据库端口"
+                                            :rules="[(val) =>(val && val.length > 0) || '请输入数据库端口',]">
+                                            <template v-slot:before>
+                                                <q-avatar class="gin-quasar-admin-logo">
+                                                    <img src="gqa128.png" />
+                                                </q-avatar>
+                                            </template>
+                                        </q-input>
+                                    </div>
+
+                                    <div class="row">
+                                        <q-input class="col" outlined v-model.trim="form.username" label="数据库用户名"
+                                            :rules="[(val) =>(val && val.length > 0) || '请输入数据库用户名',]">
+                                            <template v-slot:before>
+                                                <q-avatar class="gin-quasar-admin-logo">
+                                                    <img src="gqa128.png" />
+                                                </q-avatar>
+                                            </template>
+                                        </q-input>
+                                        <q-input class="col" outlined v-model.trim="form.password" label="数据库密码"
+                                            :rules="[(val) =>(val && val.length > 0) || '请输入数据库密码',]">
+                                            <template v-slot:before>
+                                                <q-avatar class="gin-quasar-admin-logo">
+                                                    <img src="gqa128.png" />
+                                                </q-avatar>
+                                            </template>
+                                        </q-input>
+                                    </div>
+
+                                    <q-input outlined v-model.trim="form.dbName" label="自动创建数据库/Schema名称"
                                         :rules="[(val) =>(val && val.length > 0) || '请输入数据库/Schema名',]">
                                         <template v-slot:before>
                                             <q-avatar class="gin-quasar-admin-logo">
@@ -169,20 +198,21 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import PageHeader from './PageHeader'
 import PageBanner from './PageBanner'
 import PageNews from './PageNews'
 import PageProject from './PageProject'
-// import PageHonour from './PageHonour'
+import PageHonour from './PageHonour'
 import PageWeapon from './PageWeapon'
-import PageDocument from './PageDocument'
-import PageDownload from './PageDownload'
+import PageResource from './PageResource'
 import PageFooter from './PageFooter'
 
 import { getAction, postAction } from 'src/api/manage'
-import { checkDbUrl, initDbUrl, dictDetailUrl } from 'src/api/url'
+import { checkDbUrl, initDbUrl } from 'src/api/url'
 
-import { ArrayToTree } from 'src/utils/arrayAndTree'
+import GqaVersion from 'src/components/GqaVersion'
+import GqaPluginList from 'src/components/GqaPluginList'
 
 export default {
     components: {
@@ -190,11 +220,12 @@ export default {
         PageBanner,
         PageNews,
         PageProject,
-        // PageHonour,
+        PageHonour,
         PageWeapon,
-        PageDocument,
-        PageDownload,
+        PageResource,
         PageFooter,
+        GqaVersion,
+        GqaPluginList,
     },
     computed: {
         initLabel() {
@@ -229,12 +260,16 @@ export default {
         this.checkDb()
     },
     methods: {
+        ...mapActions('storage', ['SetGqaGoVersion', 'SetGqaGinVersion', 'SetGqaPluginList']),
         checkDb() {
             this.checkDbStatus = true
             getAction(checkDbUrl).then((res) => {
                 if (res.code === 1) {
+                    this.SetGqaGoVersion(res.data.goVersion)
+                    this.SetGqaGinVersion(res.data.ginVersion)
+                    this.SetGqaPluginList(res.data.pluginList)
                     if (res.data.needInit === false) {
-                        this.getDictDetail()
+                        this.getPublic()
                         this.checkDbStatus = false
                     }
                     if (res.data.needInit === true) {
@@ -271,7 +306,7 @@ export default {
                                     })
                                     this.initDbVisible = false
                                     this.checkDbStatus = false
-                                    this.getDictDetail()
+                                    this.getPublic()
                                     this.$refs.pageBanner.showLoginForm()
                                 }
                             })
@@ -284,18 +319,13 @@ export default {
                 })
             }
         },
-        getDictDetail() {
-            postAction(dictDetailUrl).then((res) => {
-                if (res.code === 1) {
-                    const dictDetail = res.data.records
-                    const dictList = ArrayToTree(dictDetail)
-                    let dict = {}
-                    for (let d of dictList) {
-                        dict[d.value] = d.children
-                    }
-                    this.$q.cookies.set('gqa-dict', dict)
-                }
-            })
+        ...mapActions('storage', ['GetGqaDict', 'GetGqaFrontend']),
+        getPublic() {
+            this.GetGqaDict()
+            this.GetGqaFrontend()
+        },
+        openLink(url) {
+            window.open(url)
         },
     },
 }

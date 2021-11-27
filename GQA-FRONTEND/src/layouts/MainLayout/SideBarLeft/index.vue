@@ -1,13 +1,17 @@
 <template>
     <q-list>
-        <template v-for="(item, index) in addRoutes" :key="index">
+        <q-item clickable v-ripple class="text-primary text-bold text-center text-h6">
+            <q-item-section>
+                {{ topMenuItem.top ? topMenuItem.top.title : "" }}
+            </q-item-section>
+        </q-item>
+        <template v-for="(item, index) in topMenuItem.treeChildren ? topMenuItem.treeChildren : []" :key="index">
             <SideBarLeftItem :addRoutesItem="item" :initLevel="0" />
         </template>
     </q-list>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import SideBarLeftItem from './SideBarLeftItem'
 
 export default {
@@ -15,10 +19,14 @@ export default {
     components: {
         SideBarLeftItem,
     },
-    computed: {
-        ...mapGetters({
-            addRoutes: 'permission/aside',
-        }),
+    props: {
+        topMenuItem: {
+            type: Object,
+            required: false,
+            default: () => {
+                return {}
+            },
+        },
     },
 }
 </script>

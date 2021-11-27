@@ -3,22 +3,24 @@ module gin-quasar-admin
 go 1.17
 
 require (
-	github.com/casbin/gorm-adapter/v3 v3.4.4
+	github.com/Junvary/gqa-plugin-example v0.0.0-20211122093526-d0bab6fdc78e
+	github.com/casbin/casbin/v2 v2.39.0
+	github.com/casbin/gorm-adapter/v3 v3.4.5
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gin-gonic/gin v1.7.4
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/spf13/viper v1.9.0
 	go.uber.org/zap v1.19.1
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gorm.io/driver/mysql v1.1.2
-	gorm.io/gorm v1.21.16
+	gorm.io/gorm v1.22.3
 )
+
+replace gorm.io/gorm v1.22.3 => gorm.io/gorm v1.21.16
 
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
-	github.com/casbin/casbin/v2 v2.37.4 // indirect
 	github.com/denisenkom/go-mssqldb v0.11.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect

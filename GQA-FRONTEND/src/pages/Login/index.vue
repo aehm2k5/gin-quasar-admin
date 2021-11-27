@@ -5,11 +5,11 @@
                 <q-img class="col-6" :src="randomImg" />
                 <q-card-section>
                     <div class="text-center">
-                        <q-avatar class="gin-quasar-admin-logo">
-                            <img src="gqa128.png" />
-                        </q-avatar>
+                        <GqaAvatar size="xl" :src="gqaFrontend.gqaWebLogo" />
                     </div>
-                    <div class="text-h4 text-center text-primary ">Gin-Quasar-Admin</div>
+                    <div class="text-h4 text-center text-primary ">
+                        {{ gqaFrontend.gqaMainTitle }}
+                    </div>
                     <div class="text-h6 text-center text-primary q-mt-md q-mb-xs">
                         好久不见，欢迎回来！
                     </div>
@@ -25,7 +25,7 @@
                             </template>
                         </q-input>
                         <q-input :disable="loading" outlined dense no-error-icon v-model.trim="form.captcha"
-                            placeholder="验证码" :rules="[(val) => (val && val.length > 0) || '请输入验证码',]">
+                            placeholder="验证码" :rules="[(val) => (val && val.length > 0) || '请输入正确的验证码',]">
                             <template v-slot:after>
                                 <q-btn padding="none" style="width: 120px; height: 100%" @click="getCaptcha">
                                     <q-img :src="captchaImage" />
@@ -53,12 +53,6 @@
                 <GqaLanguage />
                 <!-- <q-brand-color /> -->
                 <q-space />
-                <div class="text-subtitle2 text-center text-primary">
-                    Vue版本：{{ $vueVersion }}
-                </div>
-                <div class="text-subtitle2 text-center text-primary">
-                    Quasar版本：{{ $quasarVersion }}
-                </div>
             </q-card-actions>
 
         </q-card>
@@ -70,17 +64,21 @@ import { mapActions } from 'vuex'
 import { getAction } from 'src/api/manage'
 import { captchaUrl } from 'src/api/url'
 import GqaLanguage from 'src/components/GqaLanguage'
+import GqaAvatar from 'src/components/GqaAvatar'
+import { gqaFrontendMixin } from 'src/mixins/gqaFrontendMixin'
 
 export default {
     name: 'Login',
+    mixins: [gqaFrontendMixin],
     components: {
         GqaLanguage,
+        GqaAvatar,
     },
     data() {
         return {
             loginVisible: false,
             isPwd: true,
-            randomImg: 'https://acg.toubiec.cn/random.php',
+            randomImg: 'https://api.ixiaowai.cn/api/api.php',
             form: {
                 username: '',
                 password: '',
@@ -129,6 +127,7 @@ export default {
                 this.$router.push(this.$route.query.redirect || '/')
             } else {
                 this.getCaptcha()
+                this.form.captcha = ''
                 this.loading = false
             }
         },

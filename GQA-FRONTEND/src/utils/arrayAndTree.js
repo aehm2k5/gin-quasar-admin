@@ -1,25 +1,25 @@
 import XEUtils from 'xe-utils'
 import { uniqueId } from 'lodash'
 
-export const HandleAsideMenu = function (menuData) {
+export const HandleAsideMenu = function (menuData, key, parentKey) {
     // 将列表数据转换为树形数据
-    const data = XEUtils.toArrayTree(menuData, {
-        parentKey: 'parentId',
-        strict: true
-    })
-    const menu = [
-        ...data
-    ]
+    // 处理菜单成树，key值为name，parentKey为parentCode
+    const menu = ArrayToTree(menuData, key, parentKey)
     return checkPathAndChildren(menu)
 }
 
 function checkPathAndChildren(menu) {
-    return menu.map(e => ({ ...e, path: e.path || uniqueId('gqa-null-path-'), ...e.children ? { children: checkPathAndChildren(e.children) } : {} }))
+    return menu.map(m => ({
+        ...m, path: m.path || uniqueId('gqa-null-path-'), ...m.children
+            ? { children: checkPathAndChildren(m.children) }
+            : {}
+    }))
 }
 
-export const ArrayToTree = (arrayData) => {
+export const ArrayToTree = (arrayData, key, parentKey) => {
     const data = XEUtils.toArrayTree(arrayData, {
-        parentKey: 'parentId',
+        key: key,
+        parentKey: parentKey,
         strict: true
     })
     return data

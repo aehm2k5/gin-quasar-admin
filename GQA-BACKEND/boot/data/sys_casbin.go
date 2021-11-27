@@ -62,6 +62,7 @@ var sysCasbinData = []gormadapter.CasbinRule{
 	// upload组
 	{Ptype: "p", V0: "super-admin", V1: "/upload/avatar", V2: "POST"},
 	{Ptype: "p", V0: "super-admin", V1: "/upload/file", V2: "POST"},
+	{Ptype: "p", V0: "super-admin", V1: "/upload/web-logo", V2: "POST"},
 
 	// config-backend组
 	{Ptype: "p", V0: "super-admin", V1: "/config-backend/config-backend-list", V2: "POST"},
@@ -76,20 +77,20 @@ var sysCasbinData = []gormadapter.CasbinRule{
 	{Ptype: "p", V0: "super-admin", V1: "/config-frontend/config-frontend-delete", V2: "DELETE"},
 }
 
-func (s *sysCasbin) Init() error {
+func (s *sysCasbin) LoadData() error {
 	return global.GqaDb.Transaction(func(tx *gorm.DB) error {
 		var count int64
 		tx.Model(&[]gormadapter.CasbinRule{}).Count(&count)
 		if count != 0 {
 			fmt.Println("[Gin-Quasar-Admin] --> casbin_rule 表的初始数据已存在，跳过初始化数据！数据量：", count)
-			global.GqaLog.Error("casbin_rule 表的初始数据已存在，跳过初始化数据！", zap.Any("数据量", count))
+			global.GqaLog.Error("[Gin-Quasar-Admin] --> casbin_rule 表的初始数据已存在，跳过初始化数据！", zap.Any("数据量", count))
 			return nil
 		}
 		if err := tx.Create(&sysCasbinData).Error; err != nil { // 遇到错误时回滚事务
 			return err
 		}
 		fmt.Println("[Gin-Quasar-Admin] --> casbin_rule 表初始数据成功！")
-		global.GqaLog.Error("casbin_rule 表初始数据成功！")
+		global.GqaLog.Error("[Gin-Quasar-Admin] --> casbin_rule 表初始数据成功！")
 		return nil
 	})
 }
