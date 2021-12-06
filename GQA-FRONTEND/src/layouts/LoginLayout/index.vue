@@ -1,13 +1,13 @@
 <template>
-    <q-layout>
+    <q-layout style="overflow-x: hidden">
         <q-page-container>
-            <page-header />
             <page-banner :checkDbStatus="checkDbStatus" ref="pageBanner" />
-            <page-news />
-            <page-project />
-            <page-weapon />
-            <page-honour />
-            <page-resource />
+
+            <component v-if="pluginCurrent && pluginComponent" :key="pluginCurrent" :is="pluginComponent" />
+            <q-card v-else class="row items-center justify-center" style="padding: 20px 0;">
+                <q-btn color="primary" :label="$t('LoginLayoutWithoutPlugin')"></q-btn>
+            </q-card>
+
             <page-footer />
             <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
                 <q-btn dense fab push icon="keyboard_arrow_up" color="primary" />
@@ -20,25 +20,26 @@
                         <img src="gqa128.png" />
                     </q-avatar>
 
-                    <q-toolbar-title class="row justify-between items-center">
+                    <q-toolbar-title class="row items-center">
                         <span class="text-weight-bold">
-                            欢迎使用 Gin-Quasar-Admin！
+                            {{ $t('WelcomeTo')}}
+                            Gin-Quasar-Admin
                         </span>
-                        <span class="q-gutter-md">
-                            <q-btn dense push rounded glossy color="primary"
-                                @click="openLink('https://gitee.com/junvary/gin-quasar-admin')">
-                                访问Gitee
-                            </q-btn>
-                            <q-btn dense push rounded glossy color="primary"
-                                @click="openLink('https://github.com/Junvary/gin-quasar-admin')">
-                                访问Github
-                            </q-btn>
+                        <q-space />
+                        <GqaLanguage style="width: 15%" />
+                        <q-btn dense push rounded glossy color="primary"
+                            @click="openLink('https://gitee.com/junvary/gin-quasar-admin')">
+                            Gitee
+                        </q-btn>
+                        <q-btn dense push rounded glossy color="primary" style="margin: 0 5px"
+                            @click="openLink('https://github.com/Junvary/gin-quasar-admin')">
+                            Github
+                        </q-btn>
 
-                            <q-btn dense push rounded glossy color="primary">
-                                查看版本信息
-                                <GqaVersion />
-                            </q-btn>
-                        </span>
+                        <q-btn dense push rounded glossy color="primary">
+                            {{ $t('Versions') }}
+                            <GqaVersion />
+                        </q-btn>
                     </q-toolbar-title>
                 </q-toolbar>
 
@@ -48,57 +49,59 @@
                     <q-form class="text-center" ref="initDbForm">
                         <q-stepper v-model="step" ref="stepper" color="primary" animated>
 
-                            <q-step :name="1" title="欢迎" icon="home" :done="step > 1">
+                            <q-step :name="1" :title="$t('Welcome')" icon="home" :done="step > 1">
                                 <div class="text-h5 column text-center q-gutter-md">
                                     <span class="col">
-                                        嘿，看起来这是你第一次运行 Gin-Quasar-Admin！
+                                        {{ $t('WelcomeTo')}}
+                                        Gin-Quasar-Admin
                                     </span>
                                     <span class="col">
-                                        首先你需要
-                                        <span class="text-red">初始化数据库</span>
+                                        {{ $t('LoginLayoutWizardFirstTimeText1') }}
+                                        <span class="text-negative">
+                                            {{ $t('LoginLayoutWizardFirstTimeText2') }}
+                                        </span>
                                     </span>
                                     <span class="col">
-                                        后续使用管理员账户进行
-                                        <span class="text-red">个性化配置</span>
+                                        {{ $t('LoginLayoutWizardFirstTimeText3') }}
+                                        <span class="text-negative">
+                                            {{ $t('LoginLayoutWizardFirstTimeText4') }}
+                                        </span>
                                     </span>
-                                    <span class="col">
-                                        准备好了吗？让我们开始吧！
+                                    <span class="col text-subtitle1 text-negative">
+                                        {{ $t('LoginLayoutWizardFirstTimeText5')}}
                                     </span>
                                 </div>
                             </q-step>
 
-                            <q-step :name="2" title="初始化数据库" icon="settings" :done="step > 2">
+                            <q-step :name="2" :title="$t('LoginLayoutWizardFirstTimeText2')" icon="settings"
+                                :done="step > 2">
                                 <div class="q-gutter-y-md column">
-                                    <span class="col text-red text-h7">
-                                        首先需要对数据库进行初始化，请确保已经安装并启动了数据库
+                                    <span class="col text-negative text-subtitle1">
+                                        ** {{ $t('LoginLayoutWizardInitDBText1') }} **
                                     </span>
-                                    <span class="col text-red text-h7">
-                                        系统会为你自动创建数据库，并导入初始数据。
-                                    </span>
-
-                                    <q-input outlined bottom-slots v-model.trim="form.dbType" label="数据库类型" disable
-                                        :rules="[(val) =>(val && val.length > 0) || '请输入数据库类型',]">
+                                    <q-input outlined bottom-slots v-model.trim="form.dbType"
+                                        :label="$t('LoginLayoutWizardInitDBFormDBType')" disable
+                                        :rules="[(val) =>(val && val.length > 0) || $t('LoginLayoutWizardInitDBFormDBTypeRule'),]">
                                         <template v-slot:before>
                                             <q-avatar class="gin-quasar-admin-logo">
                                                 <img src="gqa128.png" />
                                             </q-avatar>
                                         </template>
-                                        <template v-slot:hint>
-                                            只支持Mysql
-                                        </template>
                                     </q-input>
 
                                     <div class="row">
-                                        <q-input class="col" outlined v-model.trim="form.host" label="数据库地址"
-                                            :rules="[(val) =>(val && val.length > 0) || '请输入数据库地址',]">
+                                        <q-input class="col" outlined v-model.trim="form.host"
+                                            :label="$t('LoginLayoutWizardInitDBFormHost')"
+                                            :rules="[(val) =>(val && val.length > 0) || $t('LoginLayoutWizardInitDBFormHostRule'),]">
                                             <template v-slot:before>
                                                 <q-avatar class="gin-quasar-admin-logo">
                                                     <img src="gqa128.png" />
                                                 </q-avatar>
                                             </template>
                                         </q-input>
-                                        <q-input class="col" outlined v-model.trim="form.port" label="数据库端口"
-                                            :rules="[(val) =>(val && val.length > 0) || '请输入数据库端口',]">
+                                        <q-input class="col" outlined v-model.trim="form.port"
+                                            :label="$t('LoginLayoutWizardInitDBFormPort')"
+                                            :rules="[(val) =>(val && val.length > 0) || $t('LoginLayoutWizardInitDBFormPortRule'),]">
                                             <template v-slot:before>
                                                 <q-avatar class="gin-quasar-admin-logo">
                                                     <img src="gqa128.png" />
@@ -108,16 +111,18 @@
                                     </div>
 
                                     <div class="row">
-                                        <q-input class="col" outlined v-model.trim="form.username" label="数据库用户名"
-                                            :rules="[(val) =>(val && val.length > 0) || '请输入数据库用户名',]">
+                                        <q-input class="col" outlined v-model.trim="form.username"
+                                            :label="$t('LoginLayoutWizardInitDBFormUsername')"
+                                            :rules="[(val) =>(val && val.length > 0) || $t('LoginLayoutWizardInitDBFormUsernameRule'),]">
                                             <template v-slot:before>
                                                 <q-avatar class="gin-quasar-admin-logo">
                                                     <img src="gqa128.png" />
                                                 </q-avatar>
                                             </template>
                                         </q-input>
-                                        <q-input class="col" outlined v-model.trim="form.password" label="数据库密码"
-                                            :rules="[(val) =>(val && val.length > 0) || '请输入数据库密码',]">
+                                        <q-input class="col" outlined v-model.trim="form.password"
+                                            :label="$t('LoginLayoutWizardInitDBFormPassword')"
+                                            :rules="[(val) =>(val && val.length > 0) || $t('LoginLayoutWizardInitDBFormPasswordRule'),]">
                                             <template v-slot:before>
                                                 <q-avatar class="gin-quasar-admin-logo">
                                                     <img src="gqa128.png" />
@@ -126,8 +131,9 @@
                                         </q-input>
                                     </div>
 
-                                    <q-input outlined v-model.trim="form.dbName" label="自动创建数据库/Schema名称"
-                                        :rules="[(val) =>(val && val.length > 0) || '请输入数据库/Schema名',]">
+                                    <q-input outlined v-model.trim="form.dbName"
+                                        :label="$t('LoginLayoutWizardInitDBFormSchema')"
+                                        :rules="[(val) =>(val && val.length > 0) || $t('LoginLayoutWizardInitDBFormSchemaRule'),]">
                                         <template v-slot:before>
                                             <q-avatar class="gin-quasar-admin-logo">
                                                 <img src="gqa128.png" />
@@ -137,43 +143,31 @@
                                 </div>
                             </q-step>
 
-                            <q-step :name="3" title="准备就绪" icon="settings" :header-nav="step > 3">
+                            <q-step :name="3" :title="$t('LoginLayoutWizardFirstTimeText6')" icon="settings"
+                                :header-nav="step > 3">
                                 <div class="text-h5 column text-center q-gutter-md">
                                     <span class="col">
-                                        数据库用户名
-                                        <span class="text-red">{{form.username}}</span>
-                                        密码
-                                        <span class="text-red">{{form.password}}</span>
-                                        将保存在后台中
+                                        {{ $t('LoginLayoutWizardInitDBSummaryDBUser') }}
+                                        <span class="text-negative">{{form.username}}</span>
+                                        {{ $t('LoginLayoutWizardInitDBSummaryDBPassword') }}
+                                        <span class="text-negative">{{form.password}}</span>
+                                        {{ $t('LoginLayoutWizardInitDBSummaryDBPasswordSave') }}
                                     </span>
 
                                     <span class="col">
-                                        系统将为你建立
-                                        <span class="text-red">{{form.host}}:{{form.port}}</span>
-                                        的
-                                        <span class="text-red">{{form.dbType}}</span>
-                                        数据库
-                                        <span class="text-red">{{form.dbName}}</span>
+                                        {{ $t('LoginLayoutWizardInitDBSummaryDBHost') }}
+                                        <span class="text-negative">{{form.host}}:{{form.port}}</span>
+                                        {{ $t('LoginLayoutWizardInitDBSummaryDBType') }}
+                                        <span class="text-negative">{{form.dbType}}</span>
+                                        {{ $t('LoginLayoutWizardInitDBSummaryDBName') }}
+                                        <span class="text-negative">{{form.dbName}}</span>
                                     </span>
 
                                     <span class="col">
-                                        完成此步后，你需要使用
-                                        <span class="text-red">超级管理员登录</span>
-                                        进行网站
-                                        <span class="text-red">个性化配置</span>
+                                        {{ $t('LoginLayoutWizardInitDBAfterText1') }}
                                     </span>
                                     <span class="col">
-                                        后续你也可以在
-                                        <span class="text-red">超级管理员</span>
-                                        的相关菜单中找到
-                                        <span class="text-red">个性化配置</span>
-                                        入口
-                                    </span>
-                                    <span class="col">
-                                        默认超级管理员：admin，密码：123456
-                                    </span>
-                                    <span class="col">
-                                        准备就绪？
+                                        {{ $t('LoginLayoutWizardFirstTimeText6') }}？
                                     </span>
                                 </div>
                             </q-step>
@@ -181,7 +175,7 @@
                                 <q-stepper-navigation>
                                     <q-btn @click="onInitDb" color="primary" :label="initLabel" />
                                     <q-btn v-if="step > 1" flat color="primary" @click="$refs.stepper.previous()"
-                                        label="上一步" class="q-ml-sm" />
+                                        :label="$t('LoginLayoutWizardStepBack')" class="q-ml-sm" />
                                 </q-stepper-navigation>
                             </template>
 
@@ -199,30 +193,18 @@
 
 <script>
 import { mapActions } from 'vuex'
-import PageHeader from './PageHeader'
+import GqaLanguage from 'src/components/GqaLanguage'
 import PageBanner from './PageBanner'
-import PageNews from './PageNews'
-import PageProject from './PageProject'
-import PageHonour from './PageHonour'
-import PageWeapon from './PageWeapon'
-import PageResource from './PageResource'
 import PageFooter from './PageFooter'
-
 import { getAction, postAction } from 'src/api/manage'
 import { checkDbUrl, initDbUrl } from 'src/api/url'
-
 import GqaVersion from 'src/components/GqaVersion'
 import GqaPluginList from 'src/components/GqaPluginList'
-
+import { markRaw, defineAsyncComponent } from 'vue'
 export default {
     components: {
-        PageHeader,
+        GqaLanguage,
         PageBanner,
-        PageNews,
-        PageProject,
-        PageHonour,
-        PageWeapon,
-        PageResource,
         PageFooter,
         GqaVersion,
         GqaPluginList,
@@ -230,11 +212,11 @@ export default {
     computed: {
         initLabel() {
             if (this.step === 1) {
-                return '开始'
+                return this.$t('LoginLayoutWizardStepStart')
             } else if (this.step === 2) {
-                return '下一步'
+                return this.$t('LoginLayoutWizardStepNext')
             } else if (this.step === 3) {
-                return '开始初始化'
+                return this.$t('LoginLayoutWizardStepInitializingStart')
             } else {
                 return 'Next'
             }
@@ -254,6 +236,8 @@ export default {
                 dbName: 'gin-quasar-admin',
             },
             initLoading: false,
+            pluginCurrent: null,
+            pluginComponent: null,
         }
     },
     created() {
@@ -271,11 +255,23 @@ export default {
                     if (res.data.needInit === false) {
                         this.getPublic()
                         this.checkDbStatus = false
+                        this.pluginCurrent = res.data.pluginLoginLayout
+                        if (this.pluginCurrent) {
+                            try {
+                                this.pluginComponent = markRaw(defineAsyncComponent(() => import(`src/layouts/LoginLayout/${this.pluginCurrent}/index.vue`)))
+                            } catch (error) {
+                                this.$q.notify({
+                                    type: 'negative',
+                                    message: this.$t('LoginLayoutWizardInitDBAfterText2'),
+                                })
+                            }
+                        }
                     }
                     if (res.data.needInit === true) {
                         this.$q.notify({
                             type: 'warning',
-                            message: res.message,
+                            // message: res.message,
+                            message: this.$t('DbNeedInit'),
                         })
                         this.initDbVisible = true
                     }
@@ -302,7 +298,7 @@ export default {
                                     this.$refs.stepper.next()
                                     this.$q.notify({
                                         type: 'positive',
-                                        message: res.message,
+                                        message: this.$t('DbInitSuccess'),
                                     })
                                     this.initDbVisible = false
                                     this.checkDbStatus = false
@@ -319,13 +315,17 @@ export default {
                 })
             }
         },
-        ...mapActions('storage', ['GetGqaDict', 'GetGqaFrontend']),
+        ...mapActions('storage', ['GetGqaDict', 'GetGqaFrontend', 'GetGqaBackend']),
         getPublic() {
             this.GetGqaDict()
             this.GetGqaFrontend()
+            this.GetGqaBackend()
         },
         openLink(url) {
             window.open(url)
+        },
+        changeSuccess() {
+            this.$router.go(0)
         },
     },
 }

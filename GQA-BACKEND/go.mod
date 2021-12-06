@@ -3,7 +3,8 @@ module gin-quasar-admin
 go 1.17
 
 require (
-	github.com/Junvary/gqa-plugin-example v0.0.0-20211122093526-d0bab6fdc78e
+	github.com/Junvary/gqa-plugin-example v0.0.0-20211206043750-8a89226d57d0
+	github.com/Junvary/gqa-plugin-xk v0.0.0-20211206044000-79ba25cabc5d
 	github.com/casbin/casbin/v2 v2.39.0
 	github.com/casbin/gorm-adapter/v3 v3.4.5
 	github.com/fsnotify/fsnotify v1.5.1

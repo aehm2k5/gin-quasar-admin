@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
     name: 'GqaDictShow',
     props: {
@@ -24,8 +26,13 @@ export default {
     },
     computed: {
         dictLabel() {
+            const codeList = this.dictCode.split(',')
             const dict = this.dictList[this.dictName]
-            const label = dict.filter((item) => item.dictCode === this.dictCode)[0].dictLabel
+            let label = ''
+            for (let d of codeList) {
+                const l = dict.filter((item) => item.dictCode === d)[0].dictLabel
+                label += l + ' '
+            }
             return label
         },
     },
@@ -34,8 +41,17 @@ export default {
             dictList: {},
         }
     },
-    created() {
-        this.dictList = this.$q.localStorage.getItem('gqa-dict')
+    async created() {
+        const detailLocal = this.$q.localStorage.getItem('gqa-dict')
+        if (detailLocal) {
+            this.dictList = detailLocal
+        } else {
+            await this.GetGqaDict()
+            this.dictList = this.$q.localStorage.getItem('gqa-dict')
+        }
+    },
+    methods: {
+        ...mapActions('storage', ['GetGqaDict']),
     },
 }
 </script>

@@ -7,8 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
-type ApiUpload struct {
-}
+type ApiUpload struct {}
 
 func (a *ApiUpload) UploadAvatar(c *gin.Context) {
 	username := utils.GetUsername(c)
@@ -54,6 +53,22 @@ func (a *ApiUpload) UploadWebLogo(c *gin.Context) {
 	if err != nil {
 		global.GqaLog.Error("上传网站Logo失败！", zap.Any("err", err))
 		global.ErrorMessage("上传网站Logo失败，"+err.Error(), c)
+	} else {
+		global.SuccessData(gin.H{"records": icoUrl}, c)
+	}
+}
+
+func (a *ApiUpload) UploadHeaderLogo(c *gin.Context) {
+	logo, logoHeader, err := c.Request.FormFile("file")
+	if err != nil {
+		global.GqaLog.Error("解析文件失败！", zap.Any("err", err))
+		global.ErrorMessage("解析文件失败，"+err.Error(), c)
+		return
+	}
+	err, icoUrl := ServiceUpload.UploadHeaderLogo(logo, logoHeader)
+	if err != nil {
+		global.GqaLog.Error("上传标签页Logo失败！", zap.Any("err", err))
+		global.ErrorMessage("上传标签页Logo失败，"+err.Error(), c)
 	} else {
 		global.SuccessData(gin.H{"records": icoUrl}, c)
 	}

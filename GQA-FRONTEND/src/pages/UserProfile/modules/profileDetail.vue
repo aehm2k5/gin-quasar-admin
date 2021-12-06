@@ -1,15 +1,31 @@
 <template>
-    <div class="q-pa-md row items-center justify-around" id="gqa-document">
-        <q-table style="margin: 80px 0; width: 46%" title="资料查阅" :rows="data" :columns="columns" row-key="name" />
-        <q-table style="margin: 80px 0; width: 46%" title="资源下载" :rows="data" :columns="columns" row-key="name" />
-    </div>
+    <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
+        narrow-indicator style="width: 100%">
+        <q-tab name="mails" label="Mails" />
+        <q-tab name="alarms" label="Alarms" />
+        <q-tab name="movies" label="Movies" />
+    </q-tabs>
+    <q-tab-panels v-model="tab" animated style="width: 100%">
+        <q-tab-panel name="mails">
+            <q-table title="Treats" :rows="rows" :columns="columns" row-key="name" />
+        </q-tab-panel>
+
+        <q-tab-panel name="alarms">
+            <q-table title="Treats" :rows="rows" :columns="columns" row-key="name" />
+        </q-tab-panel>
+
+        <q-tab-panel name="movies">
+            <q-table title="Treats" :rows="rows" :columns="columns" row-key="name" />
+        </q-tab-panel>
+    </q-tab-panels>
 </template>
 
 <script>
 export default {
-    name: 'PageResource',
+    name: 'profileDetail',
     data() {
         return {
+            tab: 'mails',
             columns: [
                 {
                     name: 'name',
@@ -23,10 +39,12 @@ export default {
                 { name: 'calories', align: 'center', label: 'Calories', field: 'calories', sortable: true },
                 { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true },
                 { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
+                { name: 'protein', label: 'Protein (g)', field: 'protein' },
+                { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
                 { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
                 { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
             ],
-            data: [
+            rows: [
                 {
                     name: 'Frozen Yogurt',
                     calories: 159,
@@ -132,6 +150,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

@@ -1,14 +1,17 @@
 <template>
-    <q-input :label="label" v-model="showName" :class="className" readonly>
-        <template v-slot:append>
-            <q-btn dense color="primary" label="选择" @click="showSelectUserDialog" />
-        </template>
-    </q-input>
-    <SelectUserDialog ref="selectUserDialog" @handleSelectUser="handleSelectUser" :selection="selection" />
+    <div>
+        <q-input :label="label || $t('Selete') + $t('User')" v-model="showName" :class="className" readonly>
+            <template v-slot:append>
+                <q-btn dense color="primary" :label="$t('Select')" @click="showSelectUserDialog" />
+            </template>
+        </q-input>
+        <SelectUserDialog ref="selectUserDialog" @handleSelectUser="handleSelectUser" :selection="selection" />
+    </div>
 </template>
 
 <script>
 import SelectUserDialog from './SelectUserDialog'
+
 export default {
     name: 'GqaSeleteUser',
     props: {
@@ -17,13 +20,15 @@ export default {
             required: false,
         },
         selectId: {
-            type: Number,
+            type: [Number, Array],
             required: false,
         },
         label: {
             type: String,
             required: false,
-            default: '选择用户',
+            default: function () {
+                return this.$t('Selete') + this.$t('User')
+            },
         },
         className: {
             type: String,
@@ -41,14 +46,32 @@ export default {
     },
     computed: {
         showName() {
-            if (this.selectUser.nickname) {
-                return this.selectUser.nickname
-            } else if (this.selectUser.realName) {
-                return this.selectUser.realName
-            } else if (this.selectUser.id) {
-                return this.selectUser.id
+            if (this.selection === 'multiple') {
+                let nickname = ''
+                let realName = ''
+                let id = ''
+                for (let u of this.selectUser) {
+                    if (u.nickname) {
+                        nickname += u.nickname + ' '
+                    } else if (u.realName) {
+                        realName += u.realName + ' '
+                    } else if (u.id) {
+                        id += u.id + ' '
+                    } else {
+                        return ''
+                    }
+                }
+                return nickname || realName || id
             } else {
-                return ''
+                if (this.selectUser.nickname) {
+                    return this.selectUser.nickname
+                } else if (this.selectUser.realName) {
+                    return this.selectUser.realName
+                } else if (this.selectUser.id) {
+                    return this.selectUser.id
+                } else {
+                    return ''
+                }
             }
         },
     },
@@ -57,6 +80,7 @@ export default {
             this.$refs.selectUserDialog.show(this.selectUser)
         },
         handleSelectUser(event) {
+            console.log(event)
             if (this.selection === 'multiple') {
                 const ids = []
                 for (let i of event) {

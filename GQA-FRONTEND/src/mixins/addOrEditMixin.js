@@ -1,20 +1,21 @@
 import { getAction, postAction, putAction } from 'src/api/manage'
-import { date } from 'quasar'
+import { FormatDataTime } from 'src/utils/date'
+import { mapActions } from 'vuex'
 
 export const addOrEditMixin = {
     computed: {
         formTypeName() {
             if (this.formType === 'edit') {
-                return '编辑'
+                return this.$t('Edit')
             } else if (this.formType === 'add') {
-                return '新增'
+                return this.$t('Add')
             } else {
-                return '错误'
+                return this.$t('Error')
             }
         },
         showDateTime() {
             return (datetime) => {
-                return date.formatDate(datetime, "YYYY-MM-DD HH:mm:ss")
+                return FormatDataTime(datetime)
             }
         }
     },
@@ -25,15 +26,19 @@ export const addOrEditMixin = {
             formType: '',
             loading: false,
             options: {},
-            dictUrl: {
-                list: "dict/dict--detail-list"
-            }
         }
     },
-    created() {
-        this.options = this.$q.localStorage.getItem("gqa-dict")
+    async created() {
+        const detailLocal = this.$q.localStorage.getItem('gqa-dict')
+        if (detailLocal) {
+            this.options = detailLocal
+        } else {
+            await this.GetGqaDict()
+            this.options = this.$q.localStorage.getItem('gqa-dict')
+        }
     },
     methods: {
+        ...mapActions('storage', ['GetGqaDict']),
         show(row) {
             this.loading = true
             this.resetDetail()
@@ -61,6 +66,13 @@ export const addOrEditMixin = {
                 //     this.addOrEditDetail.avatar = JSON.stringify(this.addOrEditDetail.avatar)
                 // }
                 if (this.formType === 'edit') {
+                    if (this.url === undefined || !this.url.edit) {
+                        this.$q.notify({
+                            type: 'negative',
+                            message: "请先配置url",
+                        })
+                        return
+                    }
                     const res = await putAction(this.url.edit, this.addOrEditDetail)
                     if (res.code === 1) {
                         this.$q.notify({
@@ -70,6 +82,13 @@ export const addOrEditMixin = {
                         this.addOrEditVisible = false
                     }
                 } else if (this.formType === 'add') {
+                    if (this.url === undefined || !this.url.add) {
+                        this.$q.notify({
+                            type: 'negative',
+                            message: "请先配置url",
+                        })
+                        return
+                    }
                     const res = await postAction(this.url.add, this.addOrEditDetail)
                     if (res.code === 1) {
                         this.$q.notify({
@@ -81,14 +100,14 @@ export const addOrEditMixin = {
                 } else {
                     this.$q.notify({
                         type: 'negative',
-                        message: '无法新增或编辑！',
+                        message: this.$t('CanNotAddOrEdit'),
                     })
                 }
                 this.$emit('handleFinish')
             } else {
                 this.$q.notify({
                     type: 'negative',
-                    message: '请完善表格信息！',
+                    message: this.$t('FixForm'),
                 })
             }
         },
