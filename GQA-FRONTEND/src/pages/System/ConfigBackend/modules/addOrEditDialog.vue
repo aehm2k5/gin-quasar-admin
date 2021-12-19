@@ -3,7 +3,7 @@
         <q-card style="width: 800px; max-width: 80vw;">
             <q-card-section>
                 <div class="text-h6">
-                    {{ formTypeName }}后台配置：
+                    {{ formTypeName }} {{ $t('Backend') }} {{ $t('Config') }}:
                     {{ addOrEditDetail.gqaOption }}
                 </div>
             </q-card-section>
@@ -54,7 +54,7 @@
                         </div>
                         <q-field :label="$t('Status')" stack-label>
                             <template v-slot:control>
-                                <q-option-group v-model="addOrEditDetail.status" :options="options.statusOnOff"
+                                <q-option-group v-model="addOrEditDetail.status" :options="dictOptions.statusOnOff"
                                     color="primary" inline>
                                 </q-option-group>
                             </template>

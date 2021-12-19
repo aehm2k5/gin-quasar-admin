@@ -3,7 +3,7 @@
         <q-card style="width: 800px; max-width: 80vw;">
             <q-card-section>
                 <div class="text-h6">
-                    {{ formTypeName }}用户：
+                    {{ formTypeName }} {{ $t('User') }}:
                     {{ addOrEditDetail.nickname ? addOrEditDetail.nickname : addOrEditDetail.realName ? addOrEditDetail.realName : "" }}
                 </div>
             </q-card-section>
@@ -67,16 +67,32 @@
                             <q-input class="col" v-model="addOrEditDetail.email" :label="$t('Email')" />
                         </div>
                         <div class="row">
+                            <q-field class="col" :label="$t('Role')" stack-label>
+                                <template v-slot:control>
+                                    <span v-for="(item, index) in addOrEditDetail.role" :key="index">
+                                        {{ item.roleName }};&nbsp;
+                                    </span>
+                                </template>
+                            </q-field>
+                            <q-field class="col" :label="$t('Dept')" stack-label>
+                                <template v-slot:control>
+                                    <span v-for="(item, index) in addOrEditDetail.dept" :key="index">
+                                        {{ item.deptName }};&nbsp;
+                                    </span>
+                                </template>
+                            </q-field>
+                        </div>
+                        <div class="row">
                             <q-field class="col" :label="$t('Gender')" stack-label>
                                 <template v-slot:control>
-                                    <q-option-group v-model="addOrEditDetail.gender" :options="options.gender"
+                                    <q-option-group v-model="addOrEditDetail.gender" :options="dictOptions.gender"
                                         color="primary" inline>
                                     </q-option-group>
                                 </template>
                             </q-field>
                             <q-field class="col" :label="$t('Status')" stack-label>
                                 <template v-slot:control>
-                                    <q-option-group v-model="addOrEditDetail.status" :options="options.statusOnOff"
+                                    <q-option-group v-model="addOrEditDetail.status" :options="dictOptions.statusOnOff"
                                         color="primary" inline :disable="addOrEditDetail.username ==='admin'">
                                     </q-option-group>
                                 </template>

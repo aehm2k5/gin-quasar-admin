@@ -4,11 +4,12 @@
 <h1>Gin-Quasar-Admin</h1>
 </div>
 <div align=center>
-<img src="https://img.shields.io/badge/quasar-2.3.3-brightgreen"/>
-<img src="https://img.shields.io/badge/vue-3.2.23-brightgreen"/>
-<img src="https://img.shields.io/badge/gin-1.7.3-brightgreen"/>
+<img src="https://img.shields.io/badge/quasar-2.3.4-brightgreen"/>
+<img src="https://img.shields.io/badge/vue-3.2.26-brightgreen"/>
+<img src="https://img.shields.io/badge/gin-1.7.7-brightgreen"/>
 <img src="https://img.shields.io/badge/golang-1.17.2-brightgreen"/>
 </div>
+
 
 
 
@@ -18,12 +19,18 @@
 ### 主要功能：
 
 1. 动态配置网站浏览器标签页图标。
-2. 动态配置网站 主标题、次标题、网站描述等。
-3. 动态配置后台基础设置，如验证码、JWT、上传图片/文件允许大小、允许后缀。
+2. 动态配置前台：主标题、次标题、网站描述、登录页插件等。
+3. 动态配置后台：初始密码、验证码、JWT、图片/文件上传允许大小、允许后缀等。
 4. 用户可以同时拥有多个角色。
-5. 角色授权菜单和api接口。
-6. 部门管理、字典管理、用户管理、菜单管理等。
-7. i18n。
+5. 用户可以同时拥有多个部门。
+6. 角色授权菜单权限。
+7. 角色授权API权限。
+8. 角色授权数据权限。
+9. 部门管理。
+10. 字典管理。
+11. 用户管理。
+12. 菜单管理。
+13. i18n。
 
 #### 项目在不断完善中，欢迎clone和fork试用。如果你感觉不错，麻烦给个小小的 Star 鼓励一下！
 

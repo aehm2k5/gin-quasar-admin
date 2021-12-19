@@ -27,13 +27,13 @@ export default boot(({ app, router, store }) => {
         silentFallbackWarn: true
     })
     // 请求拦截
-    api.interceptors.request.use(res => {
+    api.interceptors.request.use(request => {
         const token = store.getters['user/token']
-        res.headers = {
+        request.headers = {
             'Content-Type': 'application/json;charset=utf-8',
             'Gqa-Token': token,
         }
-        return res
+        return request
     }, error => {
         Notify.create({
             type: 'negative',
@@ -43,6 +43,15 @@ export default boot(({ app, router, store }) => {
     })
     // 响应拦截
     api.interceptors.response.use(response => {
+        // 如果JWT的ExpiresAt已经过期，但是RefreshAt没有过期，那么后台会在headers里插入Gqa-Refresh-Token，这里保存下来，形成更换token逻辑
+        if (response.headers['gqa-refresh-token']) {
+            store.dispatch('user/SetToken', response.headers['gqa-refresh-token'])
+            Notify.create({
+                type: 'positive',
+                message: i18n.global.t('RefreshTokenSuccess'),
+            })
+            return api(response.config)
+        }
         const responseData = response.data
         const { code } = responseData
         if (code === 1) {
@@ -58,7 +67,7 @@ export default boot(({ app, router, store }) => {
                             ok: {
                                 push: true,
                                 color: 'negative',
-                                label: i18n.global.t('AxiosCantIdentifyOkLabel')
+                                label: i18n.global.t('Relogin')
                             },
                         }).onOk(() => {
                             store.dispatch('user/HandleLogout')
@@ -79,13 +88,13 @@ export default boot(({ app, router, store }) => {
         // 500的情况
         if (error + '' === 'Error: Request failed with status code 500') {
             Dialog.create({
-                title: i18n.global.t('AxiosErrorAbnormalTitle'),
+                title: i18n.global.t('Error'),
                 message: i18n.global.t('AxiosErrorAbnormalMessage'),
                 persistent: true,
                 ok: {
                     push: true,
                     color: 'negative',
-                    label: i18n.global.t('AxiosErrorAbnormalOkLabel')
+                    label: i18n.global.t('Logout')
                 },
             }).onOk(() => {
                 store.dispatch('user/HandleLogout')

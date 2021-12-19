@@ -35,6 +35,7 @@ var sysCasbinData = []gormadapter.CasbinRule{
 	{Ptype: "p", V0: "super-admin", V1: "/role/role-user", V2: "POST"},
 	{Ptype: "p", V0: "super-admin", V1: "/role/role-user-remove", V2: "POST"},
 	{Ptype: "p", V0: "super-admin", V1: "/role/role-user-add", V2: "POST"},
+	{Ptype: "p", V0: "super-admin", V1: "/role/role-dept-data-permission-edit", V2: "PUT"},
 	// menu组
 	{Ptype: "p", V0: "super-admin", V1: "/menu/menu-list", V2: "POST"},
 	{Ptype: "p", V0: "super-admin", V1: "/menu/menu-edit", V2: "PUT"},
@@ -47,6 +48,9 @@ var sysCasbinData = []gormadapter.CasbinRule{
 	{Ptype: "p", V0: "super-admin", V1: "/dept/dept-add", V2: "POST"},
 	{Ptype: "p", V0: "super-admin", V1: "/dept/dept-delete", V2: "DELETE"},
 	{Ptype: "p", V0: "super-admin", V1: "/dept/dept-id", V2: "POST"},
+	{Ptype: "p", V0: "super-admin", V1: "/dept/dept-user", V2: "POST"},
+	{Ptype: "p", V0: "super-admin", V1: "/dept/dept-user-remove", V2: "POST"},
+	{Ptype: "p", V0: "super-admin", V1: "/dept/dept-user-add", V2: "POST"},
 	// dict组
 	{Ptype: "p", V0: "super-admin", V1: "/dict/dict-list", V2: "POST"},
 	{Ptype: "p", V0: "super-admin", V1: "/dict/dict-edit", V2: "PUT"},

@@ -3,7 +3,7 @@
         <q-card style="width: 1400px; max-width: 80vw;">
             <q-card-section>
                 <div class="text-h6">
-                    {{ formTypeName }}资源：
+                    {{ formTypeName }}资源:
                     {{ addOrEditDetail.title }}
                 </div>
             </q-card-section>
@@ -47,7 +47,7 @@
                                 :rules="[ val => val && val.length > 0 || '必须输入标题']" />
                             <q-field dense label="是否启用" stack-label>
                                 <template v-slot:control>
-                                    <q-option-group v-model="addOrEditDetail.status" :options="options.statusOnOff"
+                                    <q-option-group v-model="addOrEditDetail.status" :options="dictOptions.statusOnOff"
                                         color="primary" inline>
                                     </q-option-group>
                                 </template>

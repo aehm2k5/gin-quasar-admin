@@ -59,7 +59,11 @@ func (s *ServiceDept) DeleteDept(id uint) (err error) {
 	if sysDept.Stable == "yes" {
 		return errors.New("系统内置不允许删除：" + sysDept.DeptCode)
 	}
-	err = global.GqaDb.Where("id = ?", id).Unscoped().Delete(&sysDept).Error
+	if err = global.GqaDb.Where("id = ?", id).Unscoped().Delete(&sysDept).Error; err!=nil{
+		return err
+	}
+	var sysDeptUser system.SysDeptUser
+	err = global.GqaDb.Where("sys_dept_dept_code = ?", sysDept.DeptCode).Delete(&sysDeptUser).Error
 	return err
 }
 
@@ -67,4 +71,36 @@ func (s *ServiceDept) QueryDeptById(id uint) (err error, deptInfo system.SysDept
 	var dept system.SysDept
 	err = global.GqaDb.Preload("Owner").Preload("CreatedByUser").Preload("UpdatedByUser").First(&dept, "id = ?", id).Error
 	return err, dept
+}
+
+func (s *ServiceDept) QueryUserByDept(deptCode *system.RequestDeptCode) (err error, user []system.SysUser) {
+	dept := system.SysDept{
+		DeptCode: deptCode.DeptCode,
+	}
+	var userList []system.SysUser
+	err = global.GqaDb.Model(&dept).Association("User").Find(&userList)
+	return err, userList
+}
+
+func (s *ServiceDept) RemoveDeptUser(toDeleteDeptUser *system.RequestDeptUser) (err error) {
+	var deptUser system.SysDeptUser
+	err = global.GqaDb.Where("sys_dept_dept_code = ? and sys_user_username = ?", toDeleteDeptUser.DeptCode, toDeleteDeptUser.Username).Delete(&deptUser).Error
+	return err
+}
+
+func (s *ServiceDept) AddDeptUser(toAddDeptUser *system.RequestDeptUserAdd) (err error) {
+	var deptUser []system.RequestDeptUser
+	for _, r := range toAddDeptUser.Username {
+		ud := system.RequestDeptUser{
+			Username:   r,
+			DeptCode: toAddDeptUser.DeptCode,
+		}
+		deptUser = append(deptUser, ud)
+	}
+	if len(deptUser) != 0{
+		err = global.GqaDb.Model(&system.SysDeptUser{}).Save(&deptUser).Error
+		return err
+	}else{
+		return errors.New("本次操作没有影响！")
+	}
 }
