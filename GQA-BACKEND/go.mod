@@ -4,7 +4,6 @@ go 1.17
 
 require (
 	github.com/Junvary/gqa-plugin-example v0.0.0-20211206043750-8a89226d57d0
-	github.com/Junvary/gqa-plugin-xk v0.0.0-20211206044000-79ba25cabc5d
 	github.com/casbin/casbin/v2 v2.39.0
 	github.com/casbin/gorm-adapter/v3 v3.4.5
 	github.com/fsnotify/fsnotify v1.5.1
@@ -14,7 +13,7 @@ require (
 	github.com/spf13/viper v1.9.0
 	go.uber.org/zap v1.19.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
-	gorm.io/driver/mysql v1.2.1
+	gorm.io/driver/mysql v1.2.2
 	gorm.io/gorm v1.22.4
 )
 
