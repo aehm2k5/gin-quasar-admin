@@ -6079,10 +6079,10 @@ ws@^8.1.0:
   resolved "https://registry.npmmirror.com/ws/download/ws-8.2.3.tgz?cache=0&sync_timestamp=1633200103980&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fws%2Fdownload%2Fws-8.2.3.tgz#63a56456db1b04367d0b721a0b80cae6d8becbba"
   integrity sha1-Y6VkVtsbBDZ9C3IaC4DK5ti+y7o=
 
-xe-utils@^3.4.3:
-  version "3.4.3"
-  resolved "https://registry.npmmirror.com/xe-utils/download/xe-utils-3.4.3.tgz#6006fed5287e976573c6c34fa4b4c8ff467a7933"
-  integrity sha512-x7tGog6B4EgOSKV5PGTG4I3r1s+do3ZPAQliV6HWcBC5hCDPr27jiphuRUNVhGXNjG1vZ/Rj/DTnvUw9stTHUQ==
+xe-utils@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/xe-utils/-/xe-utils-3.5.2.tgz#201ffde737a70ccf0b7f419569d852180e5c6d51"
+  integrity sha512-TIQct9Ed43O5J0YYRMmD15KHKUzGIW+Hetv9/diEMHT5YQVr0csC0FCFOfSgsIcuamziPVAWNFLl1QKYJE2oxA==
 
 yallist@^4.0.0:
   version "4.0.0"
