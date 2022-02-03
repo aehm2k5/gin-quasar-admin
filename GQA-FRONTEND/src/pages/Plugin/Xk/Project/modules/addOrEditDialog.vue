@@ -3,7 +3,7 @@
         <q-card style="width: 1400px; max-width: 80vw;">
             <q-card-section>
                 <div class="text-h6">
-                    {{ formTypeName }}最新要闻:
+                    {{ formTypeName }}项目:
                     {{ addOrEditDetail.title }}
                 </div>
             </q-card-section>
@@ -21,7 +21,7 @@
                         <div class="row">
                             <q-field class="col" label="创建时间" stack-label disable>
                                 <template v-slot:control>
-                                    {{showDateTime(addOrEditDetail.createdAt)}}
+                                    {{ showDateTime(addOrEditDetail.createdAt) }}
                                 </template>
                             </q-field>
                             <q-field class="col" label="创建人" stack-label disable>
@@ -32,7 +32,7 @@
                             </q-field>
                             <q-field class="col" label="更新时间" stack-label disable>
                                 <template v-slot:control>
-                                    {{showDateTime(addOrEditDetail.updatedAt)}}
+                                    {{ showDateTime(addOrEditDetail.updatedAt) }}
                                 </template>
                             </q-field>
                             <q-field class="col" label="更新人" stack-label disable>
@@ -56,11 +56,14 @@
                         <div class="row">
                             <q-input class="col" v-model="addOrEditDetail.demand" label="需求单位" />
                             <q-select class="col" v-model="addOrEditDetail.language" :options="dictOptions.codeLanguage"
-                                multiple clearable emit-value map-options label="项目语言" />
-                            <q-select class="col" v-model="addOrEditDetail.node" :options="dictOptions.projectNode"
-                                clearable emit-value map-options label="项目节点" />
+                                multiple clearable emit-value map-options
+                                :rules="[ val => val && val.length > 0 || '必须选择项目语言']" label="项目语言" />
+                            <q-select class="col" v-model="addOrEditDetail.node"
+                                :options="dictOptions.projectNode.filter(item=>item.dictCode.indexOf('p') !== -1)"
+                                clearable emit-value map-options :rules="[ val => val && val.length > 0 || '必须选择项目节点']"
+                                label="项目节点" />
                             <GqaSeleteUser className="col" label="牵头人" v-model:selectUser="addOrEditDetail.leader"
-                                v-model:selectId="addOrEditDetail.leaderId" selection="single" />
+                                v-model:selectUsername="addOrEditDetail.leaderUsername" selection="single" />
                         </div>
                         <q-select bottom-slots label="参与人" v-model="addOrEditDetail.player" use-input use-chips multiple
                             hide-dropdown-icon input-debounce="0" new-value-mode="add-unique">
@@ -77,8 +80,8 @@
             <q-separator />
 
             <q-card-actions align="right">
-                <q-btn :label="'保存' + formTypeName " color="primary" @click="handleAddOrEidt" />
-                <q-btn label="取消" color="negative" v-close-popup />
+                <q-btn :label="$t('Save') + formTypeName" color="primary" @click="handleAddOrEidt" />
+                <q-btn :label="$t('Cancel')" color="negative" v-close-popup />
             </q-card-actions>
 
             <q-inner-loading :showing="loading">
@@ -151,7 +154,7 @@ export default {
             })
             if (res.code === 1) {
                 this.addOrEditDetail = res.data.records
-                this.addOrEditDetail.player = this.addOrEditDetail.player.split(',')
+                this.addOrEditDetail.player = this.addOrEditDetail.player !== '' ? this.addOrEditDetail.player.split(',') : []
                 this.addOrEditDetail.language = this.addOrEditDetail.language.split(',')
             }
             this.loading = false

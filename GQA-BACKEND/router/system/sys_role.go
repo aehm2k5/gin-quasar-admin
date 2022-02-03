@@ -7,7 +7,7 @@ import (
 type RouterRole struct {}
 
 func (r *RouterRole) InitRouterRole(Router *gin.RouterGroup) (R gin.IRoutes) {
-	roleGroup := Router.Group("role")
+	roleGroup := Router.Group("role")/*.Use(middleware.LogOperationHandler())*/
 	{
 		//获取角色列表
 		roleGroup.POST("role-list", ApiRole.GetRoleList)

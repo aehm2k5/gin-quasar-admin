@@ -2,8 +2,8 @@ package data
 
 import (
 	"fmt"
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"time"
@@ -55,13 +55,25 @@ var sysMenuData = []system.SysMenu{
 		Name: "log", ParentCode: "system", Title: "LogManage", Icon: "toc",
 		Path: "/system/log", Component: "/System/Log/index",
 	},
+	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 1, Remark: "这是登录日志", CreatedAt: time.Now(), CreatedBy: "admin"},
+		Name: "log-login", ParentCode: "log", Title: "LogLogin", Icon: "toc",
+		Path: "/system/log/log-login", Component: "/System/Log/Login/index",
+	},
+	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 2, Remark: "这是操作日志", CreatedAt: time.Now(), CreatedBy: "admin"},
+		Name: "log-operation", ParentCode: "log", Title: "LogOperation", Icon: "toc",
+		Path: "/system/log/log-operation", Component: "/System/Log/Operation/index",
+	},
 	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 9, Remark: "这是系统示例", CreatedAt: time.Now(), CreatedBy: "admin"},
 		Name: "example", ParentCode: "system", Title: "SystemExample", Icon: "star",
 		Path: "", Component: "",
 	},
 	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 1, Remark: "这是图标合集", CreatedAt: time.Now(), CreatedBy: "admin"},
-		Name: "icon", ParentCode: "example", Title: "SystemIcon", Icon: "mood",
+		Name: "example-icon", ParentCode: "example", Title: "ExampleIcon", Icon: "mood",
 		Path: "/system/example/icon", Component: "/System/Example/Icon/index",
+	},
+	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 10, Remark: "这是消息管理", CreatedAt: time.Now(), CreatedBy: "admin"},
+		Name: "notice", ParentCode: "system", Title: "NoticeManage", Icon: "notifications",
+		Path: "/system/notice", Component: "/System/Notice/index",
 	},
 }
 
@@ -71,14 +83,14 @@ func (s *sysMenu) LoadData() error {
 		tx.Model(&system.SysMenu{}).Count(&count)
 		if count != 0 {
 			fmt.Println("[Gin-Quasar-Admin] --> sys_menu 表的初始数据已存在，跳过初始化数据！数据量：", count)
-			global.GqaLog.Error("[Gin-Quasar-Admin] --> sys_menu 表的初始数据已存在，跳过初始化数据！", zap.Any("数据量", count))
+			global.GqaLog.Warn("[Gin-Quasar-Admin] --> sys_menu 表的初始数据已存在，跳过初始化数据！", zap.Any("数据量", count))
 			return nil
 		}
 		if err := tx.Create(&sysMenuData).Error; err != nil { // 遇到错误时回滚事务
 			return err
 		}
 		fmt.Println("[Gin-Quasar-Admin] --> sys_menu 表初始数据成功！")
-		global.GqaLog.Error("[Gin-Quasar-Admin] --> sys_menu 表初始数据成功！")
+		global.GqaLog.Info("[Gin-Quasar-Admin] --> sys_menu 表初始数据成功！")
 		return nil
 	})
 }

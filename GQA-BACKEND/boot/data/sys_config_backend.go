@@ -2,8 +2,8 @@ package data
 
 import (
 	"fmt"
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"time"
@@ -51,19 +51,25 @@ var sysConfigBackendData = []system.SysConfigBackend{
 		GqaOption: "fileMaxSize", Default: "10",
 	},
 	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 1013, Remark: "文件允许后缀", CreatedAt: time.Now(), CreatedBy: "admin"},
-		GqaOption: "fileExt", Default: ".png,.jpg,.docx,.xlsx,.txt,.doc,.xls",
+		GqaOption: "fileExt", Default: ".png,.jpg,.docx,.xlsx,.txt,.doc,.xls,.zip",
 	},
 	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 1014, Remark: "网站Logo最大上传（M）", CreatedAt: time.Now(), CreatedBy: "admin"},
 		GqaOption: "webLogoMaxSize", Default: "2",
 	},
 	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 1015, Remark: "网站Logo允许后缀", CreatedAt: time.Now(), CreatedBy: "admin"},
-		GqaOption: "webLogoExt", Default: ".ico,.png,.jpg",
+		GqaOption: "webLogoExt", Default: ".png,.jpg",
 	},
 	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 1016, Remark: "标签页Logo最大上传（M）", CreatedAt: time.Now(), CreatedBy: "admin"},
 		GqaOption: "headerLogoMaxSize", Default: "1",
 	},
 	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 1017, Remark: "标签页Logo允许后缀", CreatedAt: time.Now(), CreatedBy: "admin"},
 		GqaOption: "headerLogoExt", Default: ".ico",
+	},
+	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 1018, Remark: "网站首页大图最大上传（M）", CreatedAt: time.Now(), CreatedBy: "admin"},
+		GqaOption: "bannerImageMaxSize", Default: "4",
+	},
+	{GqaModel: global.GqaModel{Stable: "yes", Status: "on", Sort: 1019, Remark: "网站首页大图允许后缀", CreatedAt: time.Now(), CreatedBy: "admin"},
+		GqaOption: "bannerImageExt", Default: ".png,.jpg",
 	},
 }
 
@@ -73,14 +79,14 @@ func (s *sysConfigBackend) LoadData() error {
 		tx.Model(&system.SysConfigBackend{}).Count(&count)
 		if count != 0 {
 			fmt.Println("[Gin-Quasar-Admin] --> sys_config_backend 表的初始数据已存在，跳过初始化数据！数据量：", count)
-			global.GqaLog.Error("[Gin-Quasar-Admin] --> sys_config_backend 表的初始数据已存在，跳过初始化数据！", zap.Any("数据量", count))
+			global.GqaLog.Warn("[Gin-Quasar-Admin] --> sys_config_backend 表的初始数据已存在，跳过初始化数据！", zap.Any("数据量", count))
 			return nil
 		}
 		if err := tx.Create(&sysConfigBackendData).Error; err != nil { // 遇到错误时回滚事务
 			return err
 		}
 		fmt.Println("[Gin-Quasar-Admin] --> sys_config_backend 表初始数据成功！")
-		global.GqaLog.Error("[Gin-Quasar-Admin] --> sys_config_backend 表初始数据成功！")
+		global.GqaLog.Info("[Gin-Quasar-Admin] --> sys_config_backend 表初始数据成功！")
 		return nil
 	})
 }

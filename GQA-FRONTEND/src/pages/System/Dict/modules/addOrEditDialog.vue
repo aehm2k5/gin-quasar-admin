@@ -22,7 +22,7 @@
                         <div class="row">
                             <q-field class="col" :label="$t('CreatedAt')" stack-label disable>
                                 <template v-slot:control>
-                                    {{showDateTime(addOrEditDetail.createdAt)}}
+                                    {{ showDateTime(addOrEditDetail.createdAt) }}
                                 </template>
                             </q-field>
                             <q-field class="col" :label="$t('CreatedBy')" stack-label disable>
@@ -33,7 +33,7 @@
                             </q-field>
                             <q-field class="col" :label="$t('UpdatedAt')" stack-label disable>
                                 <template v-slot:control>
-                                    {{showDateTime(addOrEditDetail.updatedAt)}}
+                                    {{ showDateTime(addOrEditDetail.updatedAt) }}
                                 </template>
                             </q-field>
                             <q-field class="col" :label="$t('UpdatedBy')" stack-label disable>
@@ -48,6 +48,10 @@
                                 lazy-rules :rules="[ val => val && val.length > 0 || $t('NeedInput')]" />
                             <q-input class="col" v-model="addOrEditDetail.dictLabel" :label="$t('Dict') + $t('Name')"
                                 lazy-rules :rules="[ val => val && val.length > 0 || $t('NeedInput')]" />
+                        </div>
+                        <div class="row">
+                            <q-input class="col" v-model="addOrEditDetail.dictExt1" label="Ext1" lazy-rules />
+                            <q-input class="col" v-model="addOrEditDetail.dictExt2" label="Ext2" lazy-rules />
                         </div>
                         <div class="row">
                             <q-field class="col" :label="$t('Status')" stack-label>

@@ -1,9 +1,9 @@
 package system
 
 import (
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
-	"gin-quasar-admin/utils"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -46,6 +46,7 @@ func (a *ApiUser) EditUser(c *gin.Context) {
 		global.GqaLog.Error("编辑用户失败！", zap.Any("err", err))
 		global.ErrorMessage("编辑用户失败，"+err.Error(), c)
 	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "编辑用户成功！")
 		global.SuccessMessage("编辑用户成功！", c)
 	}
 }
@@ -95,18 +96,21 @@ func (a *ApiUser) DeleteUser(c *gin.Context) {
 		return
 	}
 	if currentUser.Id == toDeleteId.Id {
+		global.GqaLog.Error(utils.GetUsername(c) + "你不能删除自己！")
 		global.ErrorMessage("你不能删除自己！", c)
 		return
 	}
 	// 初始化时 admin 的 Id 为 1，这里就这样判断了，可以增加更多的逻辑。
 	if toDeleteId.Id == 1 {
+		global.GqaLog.Error(utils.GetUsername(c) + "超级管理员不能被删除！")
 		global.ErrorMessage("超级管理员不能被删除！", c)
 		return
 	}
 	if err := ServiceUser.DeleteUser(toDeleteId.Id); err != nil {
-		global.GqaLog.Error("删除用户失败！", zap.Any("err", err))
+		global.GqaLog.Error(utils.GetUsername(c) + "删除用户失败！", zap.Any("err", err))
 		global.ErrorMessage("删除用户失败，"+err.Error(), c)
 	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "删除用户成功！" )
 		global.SuccessMessage("删除用户成功！", c)
 	}
 }
@@ -134,14 +138,6 @@ func (a *ApiUser) GetUserMenu(c *gin.Context) {
 	global.SuccessMessageData(gin.H{"records": menu}, "获取用户菜单成功！", c)
 }
 
-func (a *ApiUser) GetUserRole(c *gin.Context) {
-	err, role := ServiceUser.GetUserRole(c)
-	if err != nil {
-		global.ErrorMessage("获取用户角色失败，"+err.Error(), c)
-	}
-	global.SuccessMessageData(gin.H{"records": role}, "获取用户角色成功！", c)
-}
-
 func (a *ApiUser) ChangePassword(c *gin.Context) {
 	var toChangePassword system.RequestChangePassword
 	if err := c.ShouldBindJSON(&toChangePassword); err != nil {
@@ -154,6 +150,28 @@ func (a *ApiUser) ChangePassword(c *gin.Context) {
 		global.GqaLog.Error("修改密码失败！", zap.Any("err", err))
 		global.ErrorMessage("修改密码失败，"+err.Error(), c)
 	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "修改密码成功！")
 		global.SuccessMessage("修改密码成功！", c)
+	}
+}
+
+func (a *ApiUser) ChangeNickname(c *gin.Context) {
+	var toChangeNickname system.RequestChangeNickname
+	if err := c.ShouldBindJSON(&toChangeNickname); err != nil {
+		global.GqaLog.Error("模型绑定失败！", zap.Any("err", err))
+		global.ErrorMessage("模型绑定失败，"+err.Error(), c)
+		return
+	}
+	if toChangeNickname.Nickname == ""{
+		global.GqaLog.Error("修改昵称失败！不能为空！")
+		global.ErrorMessage("修改昵称失败！不能为空！", c)
+	}
+	username := utils.GetUsername(c)
+	if err := ServiceUser.ChangeNickname(username, toChangeNickname); err != nil {
+		global.GqaLog.Error("修改昵称失败！", zap.Any("err", err))
+		global.ErrorMessage("修改昵称失败，"+err.Error(), c)
+	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "修改昵称成功！")
+		global.SuccessMessage("修改昵称成功！", c)
 	}
 }

@@ -7,7 +7,7 @@ import (
 type RouterConfigFrontend struct {}
 
 func (r *RouterConfigFrontend) InitRouterConfigFrontend(Router *gin.RouterGroup) (R gin.IRoutes) {
-	configGroup := Router.Group("config-frontend")
+	configGroup := Router.Group("config-frontend")/*.Use(middleware.LogOperationHandler())*/
 	{
 		//获取config列表
 		configGroup.POST("config-frontend-list", ApiConfigFrontend.GetConfigFrontendList)

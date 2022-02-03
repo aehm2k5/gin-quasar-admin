@@ -3,16 +3,15 @@ package system
 import (
 	"encoding/json"
 	"errors"
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
-	"gin-quasar-admin/utils"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/utils"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"sort"
 )
 
-type ServiceUser struct {
-}
+type ServiceUser struct {}
 
 func (s *ServiceUser) GetUserList(requestUserList system.RequestUserList) (err error, user interface{}, total int64) {
 	pageSize := requestUserList.PageSize
@@ -30,9 +29,15 @@ func (s *ServiceUser) GetUserList(requestUserList system.RequestUserList) (err e
 	if err != nil {
 		return
 	}
-	err = db.Limit(pageSize).Offset(offset).Order(global.OrderByColumn(requestUserList.SortBy, requestUserList.Desc)).
-		Preload("Role").Preload("Dept").Find(&userList).Error
-	return err, userList, total
+	if requestUserList.WithAdmin{
+		err = db.Limit(pageSize).Offset(offset).Order(global.OrderByColumn(requestUserList.SortBy, requestUserList.Desc)).
+			Preload("Role").Preload("Dept").Find(&userList).Error
+		return err, userList, total
+	}else{
+		err = db.Where("username != ?", "admin").Limit(pageSize).Offset(offset).
+			Order(global.OrderByColumn(requestUserList.SortBy, requestUserList.Desc)).Preload("Role").Preload("Dept").Find(&userList).Error
+		return err, userList, total
+	}
 }
 
 func (s *ServiceUser) EditUser(toEditUser system.SysUser) (err error) {
@@ -43,7 +48,8 @@ func (s *ServiceUser) EditUser(toEditUser system.SysUser) (err error) {
 	if sysUser.Stable == "yes" {
 		return errors.New("系统内置不允许编辑：" + toEditUser.Username)
 	}
-	err = global.GqaDb.Updates(&toEditUser).Error
+	//err = global.GqaDb.Updates(&toEditUser).Error
+	err = global.GqaDb.Save(&toEditUser).Error
 	return err
 }
 
@@ -134,21 +140,6 @@ func (s *ServiceUser) GetUserMenu(c *gin.Context) (err error, menu []system.SysM
 	return nil, result
 }
 
-func (s *ServiceUser) GetUserRole(c *gin.Context) (err error, role []system.SysRole) {
-	username := utils.GetUsername(c)
-	var user system.SysUser
-	err = global.GqaDb.Preload("Role").Where("username=?", username).First(&user).Error
-	if err != nil {
-		return err, nil
-	}
-	var userRole []system.SysRole
-	err = global.GqaDb.Model(&user).Association("Role").Find(&userRole)
-	if err != nil {
-		return err, nil
-	}
-	return nil, userRole
-}
-
 func (s *ServiceUser) ChangePassword(username string, toChangePassword system.RequestChangePassword) (err error) {
 	if toChangePassword.NewPassword1 != toChangePassword.NewPassword2{
 		return errors.New("两次新密码不一致！")
@@ -166,5 +157,14 @@ func (s *ServiceUser) ChangePassword(username string, toChangePassword system.Re
 		return errors.New("新旧密码是一样的！")
 	}
 	err = global.GqaDb.Model(&sysUser).Update("password", newPassword).Error
+	return err
+}
+
+func (s *ServiceUser) ChangeNickname(username string, toChangeNickname system.RequestChangeNickname) (err error) {
+	var sysUser system.SysUser
+	if err = global.GqaDb.Where("username = ?", username).First(&sysUser).Error; err != nil {
+		return err
+	}
+	err = global.GqaDb.Model(&sysUser).Update("nickname", toChangeNickname.Nickname).Error
 	return err
 }

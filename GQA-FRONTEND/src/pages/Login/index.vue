@@ -2,18 +2,18 @@
     <q-dialog persistent v-model="loginVisible" transition-hide="slide-down">
         <q-card bordered style="width: 700px; max-width: 45vw;">
             <q-card-section horizontal>
-                <q-img class="col-6" :src="randomImg" />
+                <q-img class="col-6" :src="bannerImage" fit="cover" />
                 <q-card-section>
                     <div class="text-center">
                         <GqaAvatar size="xl" :src="gqaFrontend.gqaWebLogo" />
                     </div>
-                    <div class="text-h4 text-center text-primary ">
-                        {{ gqaFrontend.gqaMainTitle }}
+                    <div class="text-h5 text-center text-primary ">
+                        {{ gqaFrontend.gqaSubTitle }}
                     </div>
-                    <div class="text-h6 text-center text-primary q-mt-md q-mb-xs">
+                    <div class="text-h7 text-center text-primary q-mt-md q-mb-xs">
                         {{ $t('LoginTitle') }}
                     </div>
-                    <q-form @submit="onSubmit" class="q-mt-lg">
+                    <q-form @submit="onSubmit" class="q-mt-lg gqa-form">
                         <q-input :disable="loading" outlined dense no-error-icon v-model.trim="form.username"
                             :placeholder="$t('Username')" :rules="[(val) =>(val && val.length > 0) || $t('NeedInput'),]"
                             autocomplete="username" />
@@ -76,6 +76,14 @@ export default {
         GqaLanguage,
         GqaAvatar,
     },
+    computed: {
+        bannerImage() {
+            if (this.gqaFrontend.gqaBannerImage && this.gqaFrontend.gqaBannerImage.substring(0, 11) === 'gqa-upload:') {
+                return process.env.API + this.gqaFrontend.gqaBannerImage.substring(11)
+            }
+            return this.randomImg
+        },
+    },
     data() {
         return {
             loginVisible: false,
@@ -128,6 +136,8 @@ export default {
             if (res) {
                 this.loading = false
                 this.$router.push(this.$route.query.redirect || '/')
+                this.form.captcha = ''
+                this.loading = false
             } else {
                 this.form.captcha = ''
                 this.loading = false

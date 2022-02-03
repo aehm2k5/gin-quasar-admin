@@ -2,13 +2,12 @@ package system
 
 import (
 	"errors"
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
 	"gorm.io/gorm"
 )
 
-type ServiceDict struct {
-}
+type ServiceDict struct {}
 
 func (s *ServiceDict) GetDictList(requestDictList system.RequestDictList) (err error, role interface{}, total int64, parentCode string) {
 	pageSize := requestDictList.PageSize
@@ -38,7 +37,8 @@ func (s *ServiceDict) EditDict(toEditDict system.SysDict) (err error) {
 	if sysDict.Stable == "yes" {
 		return errors.New("系统内置不允许编辑：" + toEditDict.DictCode)
 	}
-	err = global.GqaDb.Updates(&toEditDict).Error
+	//err = global.GqaDb.Updates(&toEditDict).Error
+	err = global.GqaDb.Save(&toEditDict).Error
 	return err
 }
 

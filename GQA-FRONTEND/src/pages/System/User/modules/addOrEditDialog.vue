@@ -15,8 +15,8 @@
                     <div class="q-gutter-md">
                         <div class="row">
                             <q-input class="col" v-model="addOrEditDetail.id" label="ID" disable />
-                            <q-input class="col" v-model.number="addOrEditDetail.sort" type="number"
-                                :rules="[ val => val >= 1 || $t('SortRule')]" :label="$t('Sort')" />
+                            <!-- <q-input class="col" v-model.number="addOrEditDetail.sort" type="number"
+                                :rules="[ val => val >= 1 || $t('SortRule')]" :label="$t('Sort')" /> -->
                             <q-file class="col" v-model="avatarFile" :label="$t('Avatar')" max-files="1"
                                 @rejected="rejected" :accept="gqaBackend.avatarExt"
                                 :max-file-size="gqaBackend.avatarMaxSize*1024*1024">
@@ -31,7 +31,7 @@
                         <div class="row">
                             <q-field class="col" :label="$t('CreatedAt')" stack-label disable>
                                 <template v-slot:control>
-                                    {{showDateTime(addOrEditDetail.createdAt)}}
+                                    {{ showDateTime(addOrEditDetail.createdAt) }}
                                 </template>
                             </q-field>
                             <q-field class="col" :label="$t('CreatedBy')" stack-label disable>
@@ -42,7 +42,7 @@
                             </q-field>
                             <q-field class="col" :label="$t('UpdatedAt')" stack-label disable>
                                 <template v-slot:control>
-                                    {{showDateTime(addOrEditDetail.updatedAt)}}
+                                    {{ showDateTime(addOrEditDetail.updatedAt) }}
                                 </template>
                             </q-field>
                             <q-field class="col" :label="$t('UpdatedBy')" stack-label disable>

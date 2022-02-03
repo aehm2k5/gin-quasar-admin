@@ -7,7 +7,7 @@ import (
 type RouterApi struct{}
 
 func (r *RouterApi) InitRouterApi(Router *gin.RouterGroup) (R gin.IRoutes) {
-	apiGroup := Router.Group("api")
+	apiGroup := Router.Group("api")/*.Use(middleware.LogOperationHandler())*/
 	{
 		//获取api列表
 		apiGroup.POST("api-list", ApiApi.GetApiList)

@@ -40,7 +40,7 @@
         -30vmax -10vmax,
         50vmax 50vmax;
     background-repeat: no-repeat;
-    animation        : 10s movement linear infinite;
+    animation        : 5s movement linear infinite;
 }
 
 @keyframes movement {
@@ -110,4 +110,17 @@
 .q-tab,
 .q-btn {
     text-transform: none;
+}
+
+
+.gqa-form {
+    & .q-field__messages {
+        & div {
+            width        : max-content;
+            border-radius: 5px;
+            background   : $negative;
+            color        : #fff;
+            padding      : 3px;
+        }
+    }
 }

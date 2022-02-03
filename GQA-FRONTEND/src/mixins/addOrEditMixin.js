@@ -1,5 +1,5 @@
 import { getAction, postAction, putAction } from 'src/api/manage'
-import { FormatDataTime } from 'src/utils/date'
+import { FormatDateTime } from 'src/utils/date'
 import { DictOptions } from 'src/utils/dict'
 
 export const addOrEditMixin = {
@@ -15,7 +15,7 @@ export const addOrEditMixin = {
         },
         showDateTime() {
             return (datetime) => {
-                return FormatDataTime(datetime)
+                return FormatDateTime(datetime)
             }
         }
     },
@@ -32,7 +32,6 @@ export const addOrEditMixin = {
         this.dictOptions = await DictOptions()
     },
     methods: {
-
         show(row) {
             this.loading = true
             this.resetDetail()

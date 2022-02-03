@@ -1,7 +1,7 @@
 package system
 
 import (
-	"gin-quasar-admin/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
 )
 
 type SysUser struct {
@@ -11,7 +11,7 @@ type SysUser struct {
 	Avatar   string    `json:"avatar" gorm:"comment:头像"`
 	Username string    `json:"username" gorm:"comment:用户名;not null;uniqueIndex;"`
 	Password string    `json:"-"  gorm:"comment:用户登录密码"`
-	Nickname string    `json:"nickname" gorm:"comment:用户昵称;default:GQA用户"`
+	Nickname string    `json:"nickname" gorm:"comment:用户昵称;"`
 	RealName string    `json:"realName" gorm:"comment:真实姓名"`
 	Gender   string    `json:"gender" gorm:"comment:性别;default:u"`
 	Mobile   string    `json:"mobile" gorm:"comment:手机号"`
@@ -36,8 +36,9 @@ type RequestAddUser struct {
 type RequestUserList struct {
 	global.RequestPageAndSort
 	//可扩充的模糊搜索项，参考上面 RequestAddUser 中的字段
-	Username string `json:"username"`
-	RealName string `json:"realName"`
+	Username  string `json:"username"`
+	RealName  string `json:"realName"`
+	WithAdmin bool   `json:"withAdmin"` // 是否显示admin用户
 	//全部可搜索，直接放开模型，并从service里面配置搜索逻辑
 	//SysUser
 }
@@ -46,4 +47,8 @@ type RequestChangePassword struct {
 	OldPassword  string `json:"oldPassword" binding:"required"`
 	NewPassword1 string `json:"newPassword1" binding:"required"`
 	NewPassword2 string `json:"newPassword2" binding:"required"`
+}
+
+type RequestChangeNickname struct {
+	Nickname string `json:"nickname" binding:"required"`
 }

@@ -2,7 +2,7 @@ package data
 
 import (
 	"fmt"
-	"gin-quasar-admin/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -23,6 +23,7 @@ var sysCasbinData = []gormadapter.CasbinRule{
 	//project
 	{Ptype: "p", V0: "super-admin", V1: "/plugin-xk/project-list", V2: "POST"},
 	{Ptype: "p", V0: "super-admin", V1: "/plugin-xk/project-edit", V2: "PUT"},
+	{Ptype: "p", V0: "super-admin", V1: "/plugin-xk/project-edit-detail", V2: "PUT"},
 	{Ptype: "p", V0: "super-admin", V1: "/plugin-xk/project-add", V2: "POST"},
 	{Ptype: "p", V0: "super-admin", V1: "/plugin-xk/project-delete", V2: "DELETE"},
 	{Ptype: "p", V0: "super-admin", V1: "/plugin-xk/project-id", V2: "POST"},
@@ -52,14 +53,14 @@ func (s *sysCasbin) LoadData() error {
 		tx.Model(&[]gormadapter.CasbinRule{}).Where("v1 like ?", "/plugin-xk%").Count(&count)
 		if count != 0 {
 			fmt.Println("[GQA-Plugin] --> casbin_rule 表中xk插件数据已存在，跳过初始化数据！数据量：", count)
-			global.GqaLog.Error("[GQA-Plugin] --> casbin_rule 表中xk插件数据已存在，跳过初始化数据！", zap.Any("数据量", count))
+			global.GqaLog.Warn("[GQA-Plugin] --> casbin_rule 表中xk插件数据已存在，跳过初始化数据！", zap.Any("数据量", count))
 			return nil
 		}
 		if err := tx.Create(&sysCasbinData).Error; err != nil { // 遇到错误时回滚事务
 			return err
 		}
 		fmt.Println("[GQA-Plugin] --> xk插件初始数据进入 casbin_rule 表成功！")
-		global.GqaLog.Error("[GQA-Plugin] --> xk插件初始数据进入 casbin_rule 表成功！")
+		global.GqaLog.Info("[GQA-Plugin] --> xk插件初始数据进入 casbin_rule 表成功！")
 		return nil
 	})
 }

@@ -1,7 +1,6 @@
 <template>
     <q-layout view="hHh LpR lFr">
         <q-header reveal elevated>
-            <!-- <div class="row no-wrap shadow-1"> -->
             <q-toolbar class="bg-primary glossy ">
                 <q-btn dense round glossy push icon="sync_alt" aria-label="Menu"
                     @click="toggleLeftDrawer = !toggleLeftDrawer" />
@@ -21,14 +20,16 @@
                 <q-space />
 
                 <Fullscreen style="margin: 0 5px" />
-                <Notice style="margin: 0 5px" />
+
+                <ChatAndNotice />
+
                 <UserMenu style="margin: 0 5px" @showProfile="$refs.userProfile.show()" />
                 <!-- <q-language-switcher/> -->
                 <Setting style="margin: 0 5px" />
                 <GitLink style="margin: 0 5px" v-if="gqaFrontend.gqaShowGit === 'yes'" />
 
             </q-toolbar>
-            <!-- </div> -->
+
             <q-separator />
             <!-- header下面的标签页 -->
             <div class="row bg-primary">
@@ -40,16 +41,26 @@
 
         <q-drawer elevated v-if="!pageDashboard" v-model="toggleLeftDrawer" show-if-above bordered
             content-class="bg-grey-1">
-
             <SideBarLeft :topMenuItem="topMenuItem" />
-
         </q-drawer>
 
         <q-page-container>
             <router-view />
-            <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
-                <q-btn dense fab push icon="keyboard_arrow_up" color="primary" />
-            </q-page-scroller>
+
+            <q-page-sticky position="bottom-right" :offset="fabPos" class="column">
+                <q-btn class="col" fab glossy push icon="add" color="primary" :disable="draggingFab"
+                    v-touch-pan.prevent.mouse="moveFab" @click="addTodoNote">
+                    <q-tooltip>
+                        {{ $t('Add') + ' ' + $t('TodoNote') }}
+                    </q-tooltip>
+                </q-btn>
+                <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[0, -80]">
+                    <q-btn push fab glossy rounded icon="keyboard_arrow_up" color="primary"
+                        v-touch-pan.prevent.mouse="moveFab" />
+                </q-page-scroller>
+                <NoticeTodoNoteDetail ref="noticeTodoNoteDetail" />
+            </q-page-sticky>
+
         </q-page-container>
 
         <q-footer reveal elevated>
@@ -67,13 +78,15 @@ import { gqaFrontendMixin } from 'src/mixins/gqaFrontendMixin'
 import SideBarLeft from './SideBarLeft'
 import TabMenu from './TabMenu'
 import Fullscreen from './Fullscreen'
-import Notice from './Notice'
+import ChatAndNotice from './ChatAndNotice'
 import GitLink from './GitLink'
 import UserMenu from './UserMenu'
 import Setting from './Setting'
 import PageFooter from './PageFooter'
 import GqaAvatar from 'src/components/GqaAvatar'
 import UserProfile from 'src/pages/UserProfile'
+import NoticeTodoNoteDetail from 'src/pages/UserProfile/modules/NoticeTodoNoteDetail.vue'
+
 export default {
     name: 'MainLayout',
     mixins: [gqaFrontendMixin],
@@ -81,13 +94,14 @@ export default {
         SideBarLeft,
         TabMenu,
         Fullscreen,
-        Notice,
+        ChatAndNotice,
         GitLink,
         UserMenu,
         Setting,
         PageFooter,
         GqaAvatar,
         UserProfile,
+        NoticeTodoNoteDetail,
     },
     computed: {
         ...mapGetters({
@@ -123,6 +137,8 @@ export default {
             toggleLeftDrawer: false,
             topMenuItem: {},
             currentItemMenu: 'dashboard',
+            draggingFab: false,
+            fabPos: [3, 80],
         }
     },
     created() {
@@ -134,6 +150,14 @@ export default {
                 this.$router.push('/dashboard')
             }
             this.topMenuItem = item
+        },
+        moveFab(ev) {
+            this.draggingFab = ev.isFirst !== true && ev.isFinal !== true
+            this.fabPos = [this.fabPos[0] - ev.delta.x, this.fabPos[1] - ev.delta.y]
+        },
+        addTodoNote() {
+            this.$refs.noticeTodoNoteDetail.formType = 'add'
+            this.$refs.noticeTodoNoteDetail.show({})
         },
     },
 }

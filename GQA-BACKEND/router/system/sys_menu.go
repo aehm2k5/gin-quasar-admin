@@ -7,7 +7,7 @@ import (
 type RouterMenu struct{}
 
 func (r *RouterMenu) InitRouterMenu(Router *gin.RouterGroup) (R gin.IRoutes) {
-	menuGroup := Router.Group("menu")
+	menuGroup := Router.Group("menu")/*.Use(middleware.LogOperationHandler())*/
 	{
 		//获取菜单列表
 		menuGroup.POST("menu-list", ApiMenu.GetMenuList)

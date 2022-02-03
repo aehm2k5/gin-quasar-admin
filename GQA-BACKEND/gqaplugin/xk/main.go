@@ -1,10 +1,10 @@
 package xk
 
 import (
-	"gin-quasar-admin/gqaplugin/xk/data"
-	"gin-quasar-admin/gqaplugin/xk/model"
-	"gin-quasar-admin/gqaplugin/xk/router/private_router"
-	"gin-quasar-admin/gqaplugin/xk/router/public_router"
+	"github.com/Junvary/gqa-plugin-xk/data"
+	"github.com/Junvary/gqa-plugin-xk/model"
+	"github.com/Junvary/gqa-plugin-xk/router/private_router"
+	"github.com/Junvary/gqa-plugin-xk/router/public_router"
 	"github.com/gin-gonic/gin"
 )
 
@@ -40,6 +40,7 @@ func (p *xk) PluginMigrate() []interface{} { //实现接口方法，迁移插件
 	var ModelList = []interface{}{
 		model.GqaPluginXkNews{},
 		model.GqaPluginXkProject{},
+		model.GqaPluginXkProjectDetail{},
 		model.GqaPluginXkHonour{},
 		model.GqaPluginXkDocument{},
 		model.GqaPluginXkDownload{},

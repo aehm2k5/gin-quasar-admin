@@ -2,13 +2,12 @@ package system
 
 import (
 	"errors"
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
 	"gorm.io/gorm"
 )
 
-type ServiceApi struct {
-}
+type ServiceApi struct {}
 
 func (s *ServiceApi) GetApiList(requestApiList system.RequestApiList) (err error, api interface{}, total int64) {
 	pageSize := requestApiList.PageSize
@@ -41,7 +40,8 @@ func (s *ServiceApi) EditApi(toEditApi system.SysApi) (err error) {
 	if sysApi.Stable == "yes" {
 		return errors.New("系统内置不允许编辑：" + sysApi.ApiPath)
 	}
-	err = global.GqaDb.Updates(&sysApi).Error
+	//err = global.GqaDb.Updates(&toEditApi).Error
+	err = global.GqaDb.Save(&toEditApi).Error
 	return err
 }
 

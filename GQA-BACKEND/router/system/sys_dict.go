@@ -7,7 +7,7 @@ import (
 type RouterDict struct {}
 
 func (r *RouterDict) InitRouterDict(Router *gin.RouterGroup) (R gin.IRoutes) {
-	dictGroup := Router.Group("dict")
+	dictGroup := Router.Group("dict")/*.Use(middleware.LogOperationHandler())*/
 	{
 		//获取根字典列表
 		dictGroup.POST("dict-list", ApiDict.GetDictList)

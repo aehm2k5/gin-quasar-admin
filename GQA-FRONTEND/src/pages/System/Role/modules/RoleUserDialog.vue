@@ -5,7 +5,7 @@
                 :rows-per-page-options="pageOptions" :loading="loading" @request="onRequest">
 
                 <template v-slot:top="props">
-                    <q-btn dense color="primary" @click="showAddUserForm()" :label="$t('Add') + $t('Users')" />
+                    <q-btn dense color="primary" @click="showAddUserForm()" :label="$t('Add') + $t('User')" />
                     <q-space />
                     <q-btn flat round dense :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
                         @click="props.toggleFullscreen" class="q-ml-md" />
@@ -45,12 +45,18 @@ export default {
                 addUser: 'role/role-user-add',
             },
             columns: [
-                { name: 'sort', align: 'center', label: this.$t('Sort'), field: 'sort' },
+                // { name: 'sort', align: 'center', label: this.$t('Sort'), field: 'sort' },
                 { name: 'username', align: 'center', label: this.$t('Username'), field: 'username' },
                 { name: 'nickname', align: 'center', label: this.$t('Nickname'), field: 'nickname' },
                 { name: 'realName', align: 'center', label: this.$t('RealName'), field: 'realName' },
                 { name: 'actions', align: 'center', label: this.$t('Actions'), field: 'actions' },
             ],
+            pagination: {
+                sortBy: 'username',
+                descending: false,
+                page: 1,
+                rowsPerPage: 10,
+            },
         }
     },
     methods: {

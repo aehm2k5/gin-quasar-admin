@@ -4,7 +4,7 @@
 <h1>Gin-Quasar-Admin</h1>
 </div>
 <div align=center>
-<img src="https://img.shields.io/badge/quasar-2.3.4-brightgreen"/>
+<img src="https://img.shields.io/badge/quasar-2.4.11-brightgreen"/>
 <img src="https://img.shields.io/badge/vue-3.2.26-brightgreen"/>
 <img src="https://img.shields.io/badge/gin-1.7.7-brightgreen"/>
 <img src="https://img.shields.io/badge/golang-1.17.2-brightgreen"/>
@@ -14,7 +14,9 @@
 
 
 
-#### Gin-Quasar-Admin 使用 Go+Gin+Vue3+Quasar2 搭建，可以通过简单的配置快速形成自己的网站，并通过插件形式开发个性化逻辑。
+
+
+#### Gin-Quasar-Admin 使用 Go+Gin+Vue3+Quasar2 搭建，可以通过简单的配置快速搭建个性化网站，并通过插件形式开发个性化逻辑。项目实现和集成了众多功能，如用户管理、部门管理、角色管理、数据权限、Websocket、聊天室、消息管理、菜单管理、字典管理、i18n等。是Quasar、Go的入门和学习佳品。
 
 ### 主要功能：
 
@@ -31,6 +33,9 @@
 11. 用户管理。
 12. 菜单管理。
 13. i18n。
+14. 聊天室。
+15. 消息管理。
+16. 待处理消息和待办便签提醒。
 
 #### 项目在不断完善中，欢迎clone和fork试用。如果你感觉不错，麻烦给个小小的 Star 鼓励一下！
 

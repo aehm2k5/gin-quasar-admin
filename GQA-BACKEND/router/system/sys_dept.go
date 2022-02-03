@@ -7,7 +7,7 @@ import (
 type RouterDept struct {}
 
 func (r *RouterDept) InitRouterDept(Router *gin.RouterGroup) (R gin.IRoutes) {
-	deptGroup := Router.Group("dept")
+	deptGroup := Router.Group("dept")/*.Use(middleware.LogOperationHandler())*/
 	{
 		//获取部门列表
 		deptGroup.POST("dept-list", ApiDept.GetDeptList)

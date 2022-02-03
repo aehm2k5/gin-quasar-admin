@@ -2,8 +2,8 @@ package data
 
 import (
 	"fmt"
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -25,8 +25,11 @@ var sysRoleMenuData = []system.SysRoleMenu{
 	{"super-admin", "config-frontend"},
 	{"super-admin", "config-backend"},
 	{"super-admin", "log"},
+	{"super-admin", "log-login"},
+	{"super-admin", "log-operation"},
 	{"super-admin", "example"},
-	{"super-admin", "icon"},
+	{"super-admin", "example-icon"},
+	{"super-admin", "notice"},
 }
 
 func (s *sysRoleMenu) LoadData() error {
@@ -35,14 +38,14 @@ func (s *sysRoleMenu) LoadData() error {
 		tx.Model(&system.SysRoleMenu{}).Count(&count)
 		if count != 0 {
 			fmt.Println("[Gin-Quasar-Admin] --> sys_role_menu 表的初始数据已存在，跳过初始化数据！数据量：", count)
-			global.GqaLog.Error("[Gin-Quasar-Admin] --> sys_role_menu 表的初始数据已存在，跳过初始化数据！", zap.Any("数据量", count))
+			global.GqaLog.Warn("[Gin-Quasar-Admin] --> sys_role_menu 表的初始数据已存在，跳过初始化数据！", zap.Any("数据量", count))
 			return nil
 		}
 		if err := tx.Create(&sysRoleMenuData).Error; err != nil { // 遇到错误时回滚事务
 			return err
 		}
 		fmt.Println("[Gin-Quasar-Admin] --> sys_role_menu 表初始数据成功!")
-		global.GqaLog.Error("[Gin-Quasar-Admin] --> sys_role_menu 表初始数据成功!")
+		global.GqaLog.Info("[Gin-Quasar-Admin] --> sys_role_menu 表初始数据成功!")
 		return nil
 	})
 }

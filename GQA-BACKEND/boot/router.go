@@ -1,16 +1,17 @@
 package boot
 
 import (
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/gqaplugin"
-	"gin-quasar-admin/middleware"
-	"gin-quasar-admin/router"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/gqaplugin"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/middleware"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/router"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func Router() *gin.Engine {
 	var Router = gin.Default()
+	Router.Use(middleware.Cors())
 
 	/*
 		为文件提供静态资源路径 头像和文件 无须鉴权
@@ -21,6 +22,8 @@ func Router() *gin.Engine {
 	Router.StaticFS(global.GqaConfig.Upload.FileUrl, http.Dir(global.GqaConfig.Upload.FileSavePath))
 	//网站Logo
 	Router.StaticFS(global.GqaConfig.Upload.WebLogoUrl, http.Dir(global.GqaConfig.Upload.WebLogoSavePath))
+	//首页大图
+	Router.StaticFS(global.GqaConfig.Upload.BannerImageUrl, http.Dir(global.GqaConfig.Upload.BannerImageSavePath))
 
 	/*
 		公共路由分组：以 public 开头，路由内部无须再次分组，无须鉴权。
@@ -39,8 +42,10 @@ func Router() *gin.Engine {
 		routerPublic.InitRouterGetDict(PublicGroup)
 		//获取网站公共信息：前台配置
 		routerPublic.InitRouterGetFrontend(PublicGroup)
-		//	获取网站公共信息：后台配置
+		//获取网站公共信息：后台配置
 		routerPublic.InitRouterGetBackend(PublicGroup)
+		//websocket
+		routerPublic.InitRouterWebSocket(PublicGroup)
 	}
 	/*
 		鉴权路由分组：这里以空分组，路由内部按实绩情况分组，需要鉴权。
@@ -58,6 +63,9 @@ func Router() *gin.Engine {
 		routerSystem.InitRouterUpload(PrivateGroup)
 		routerSystem.InitRouterConfigBackend(PrivateGroup)
 		routerSystem.InitRouterConfigFrontend(PrivateGroup)
+		routerSystem.InitRouterLog(PrivateGroup)
+		routerSystem.InitRouterNotice(PrivateGroup)
+		routerSystem.InitRouterTodoNote(PrivateGroup)
 	}
 	//加载插件路由
 	gqaplugin.RegisterPluginRouter(PublicGroup, PrivateGroup)

@@ -1,9 +1,9 @@
 package system
 
 import (
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
-	"gin-quasar-admin/utils"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -42,6 +42,7 @@ func (a *ApiDept) EditDept(c *gin.Context) {
 		global.GqaLog.Error("编辑部门失败！", zap.Any("err", err))
 		global.ErrorMessage("编辑部门失败，"+err.Error(), c)
 	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "编辑部门成功！")
 		global.SuccessMessage("编辑部门成功！", c)
 	}
 }
@@ -85,6 +86,7 @@ func (a *ApiDept) DeleteDept(c *gin.Context) {
 		global.GqaLog.Error("删除部门失败！", zap.Any("err", err))
 		global.ErrorMessage("删除部门失败，"+err.Error(), c)
 	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "删除部门成功！")
 		global.SuccessMessage("删除部门成功！", c)
 	}
 }
@@ -130,6 +132,7 @@ func (a *ApiDept) RemoveDeptUser(c *gin.Context) {
 		global.GqaLog.Error("移除部门用户失败！", zap.Any("err", err))
 		global.ErrorMessage("移除部门用户失败，"+err.Error(), c)
 	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "移除部门用户成功！")
 		global.SuccessMessage("移除部门用户成功！", c)
 	}
 }

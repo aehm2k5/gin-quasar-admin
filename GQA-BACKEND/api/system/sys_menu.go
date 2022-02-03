@@ -1,9 +1,9 @@
 package system
 
 import (
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
-	"gin-quasar-admin/utils"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -42,6 +42,7 @@ func (a *ApiMenu) EditMenu(c *gin.Context) {
 		global.GqaLog.Error("编辑菜单失败！", zap.Any("err", err))
 		global.ErrorMessage("编辑菜单失败，"+err.Error(), c)
 	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "编辑菜单成功！")
 		global.SuccessMessage("编辑菜单成功！", c)
 	}
 }
@@ -89,6 +90,7 @@ func (a *ApiMenu) DeleteMenu(c *gin.Context) {
 		global.GqaLog.Error("删除菜单失败！", zap.Any("err", err))
 		global.ErrorMessage("删除菜单失败，"+err.Error(), c)
 	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "删除菜单成功！")
 		global.SuccessMessage("删除菜单成功！", c)
 	}
 }

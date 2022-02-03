@@ -2,13 +2,12 @@ package system
 
 import (
 	"errors"
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
 	"gorm.io/gorm"
 )
 
-type ServiceDept struct {
-}
+type ServiceDept struct {}
 
 func (s *ServiceDept) GetDeptList(requestDeptList system.RequestDeptList) (err error, role interface{}, total int64) {
 	pageSize := requestDeptList.PageSize
@@ -38,7 +37,8 @@ func (s *ServiceDept) EditDept(toEditDept system.SysDept) (err error) {
 	if sysDept.Stable == "yes" {
 		return errors.New("系统内置不允许编辑：" + toEditDept.DeptCode)
 	}
-	err = global.GqaDb.Updates(&toEditDept).Error
+	//err = global.GqaDb.Updates(&toEditDept).Error
+	err = global.GqaDb.Save(&toEditDept).Error
 	return err
 }
 

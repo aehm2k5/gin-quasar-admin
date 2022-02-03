@@ -1,6 +1,6 @@
 package public
 
-import "gin-quasar-admin/api"
+import "github.com/Junvary/gin-quasar-admin/GQA-BACKEND/api"
 
 type RouterPublic struct {
 	RouterCheckDb
@@ -9,6 +9,7 @@ type RouterPublic struct {
 	RouterGetDict
 	RouterGetFrontend
 	RouterGetBackend
+	RouterWebSocket
 }
 
 var ApiPublic = api.GroupApiApp.ApiPublic
@@ -18,3 +19,4 @@ var ApiLogin = ApiPublic.ApiLogin
 var ApiGetDict = ApiPublic.ApiGetDict
 var ApiGetFrontend = ApiPublic.ApiGetFrontend
 var ApiGetBackend = ApiPublic.ApiGetBackend
+var ApiWebSocket = ApiPublic.ApiWebSocket

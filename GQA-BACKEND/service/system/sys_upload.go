@@ -2,8 +2,8 @@ package system
 
 import (
 	"errors"
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/utils"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/utils"
 	"mime/multipart"
 	"strconv"
 	"time"
@@ -59,6 +59,33 @@ func (s *ServiceUpload) UploadFile(file multipart.File, fileHeader *multipart.Fi
 	createPath := global.GqaConfig.Upload.FileSavePath + "/" + strconv.Itoa(time.Now().Year()) + "/" + time.Now().Month().String()
 	createUrl := global.GqaConfig.Upload.FileUrl  + "/" + strconv.Itoa(time.Now().Year()) + "/" + time.Now().Month().String()
 	filename, err := utils.UploadFile(createPath, fileHeader)
+	if err != nil{
+		return err, ""
+	}
+	fileUrl = "gqa-upload:" + createUrl + "/" + filename
+	return nil, fileUrl
+}
+
+func (s *ServiceUpload) UploadBannerImage(img multipart.File, bannerImage *multipart.FileHeader) (err error, fileUrl string) {
+	// 检查文件大小
+	maxSizeString := utils.GetConfigBackend("bannerImageMaxSize")
+	if maxSizeString == ""{
+		return errors.New("没有找到网站首页大图大小配置！"), ""
+	}
+	if !utils.CheckFileSize(img, maxSizeString, "M"){
+		return errors.New("网站首页大图大小超出限制！"), ""
+	}
+	// 检查文件后缀
+	extListString := utils.GetConfigBackend("bannerImageExt")
+	if extListString == ""{
+		return errors.New("没有找到网站首页大图后缀配置！"), ""
+	}
+	if !utils.CheckFileExt(bannerImage, extListString){
+		return errors.New("网站首页大图后缀不被允许！"), ""
+	}
+	createPath := global.GqaConfig.Upload.WebLogoSavePath
+	createUrl := global.GqaConfig.Upload.WebLogoUrl
+	filename, err := utils.UploadFile(createPath, bannerImage)
 	if err != nil{
 		return err, ""
 	}

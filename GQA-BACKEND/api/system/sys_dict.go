@@ -1,9 +1,9 @@
 package system
 
 import (
-	"gin-quasar-admin/global"
-	"gin-quasar-admin/model/system"
-	"gin-quasar-admin/utils"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/global"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/model/system"
+	"github.com/Junvary/gin-quasar-admin/GQA-BACKEND/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -43,6 +43,7 @@ func (a *ApiDict) EditDict(c *gin.Context) {
 		global.GqaLog.Error("编辑字典失败!", zap.Any("err", err))
 		global.ErrorMessage("编辑字典失败，"+err.Error(), c)
 	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "编辑字典成功！")
 		global.SuccessMessage("编辑字典成功！", c)
 	}
 }
@@ -64,6 +65,8 @@ func (a *ApiDict) AddDict(c *gin.Context) {
 		ParentCode: toAddDict.ParentCode,
 		DictCode:   toAddDict.DictCode,
 		DictLabel:  toAddDict.DictLabel,
+		DictExt1:   toAddDict.DictExt1,
+		DictExt2:   toAddDict.DictExt2,
 	}
 	if err := ServiceDict.AddDict(*addDict); err != nil {
 		global.GqaLog.Error("添加字典失败！", zap.Any("err", err))
@@ -84,6 +87,7 @@ func (a *ApiDict) DeleteDict(c *gin.Context) {
 		global.GqaLog.Error("删除字典失败！", zap.Any("err", err))
 		global.ErrorMessage("删除字典失败，"+err.Error(), c)
 	} else {
+		global.GqaLog.Warn(utils.GetUsername(c) + "删除字典成功！")
 		global.SuccessMessage("删除字典成功！", c)
 	}
 }

@@ -1,6 +1,6 @@
 package system
 
-import "gin-quasar-admin/api"
+import "github.com/Junvary/gin-quasar-admin/GQA-BACKEND/api"
 
 type RouterSystem struct {
 	RouterMenu
@@ -12,6 +12,9 @@ type RouterSystem struct {
 	RouterUpload
 	RouterConfigBackend
 	RouterConfigFrontend
+	RouterLog
+	RouterNotice
+	RouterTodoNote
 }
 
 var ApiSystem = api.GroupApiApp.ApiSystem
@@ -24,3 +27,7 @@ var ApiApi = ApiSystem.ApiApi
 var ApiUpload = ApiSystem.ApiUpload
 var ApiConfigBackend = ApiSystem.ApiConfigBackend
 var ApiConfigFrontend = ApiSystem.ApiConfigFrontend
+var ApiLogLogin = ApiSystem.ApiLogLogin
+var ApiLogOperation = ApiSystem.ApiLogOperation
+var ApiNotice = ApiSystem.ApiNotice
+var ApiTodoNote = ApiSystem.ApiTodoNote
