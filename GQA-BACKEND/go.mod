@@ -1,21 +1,23 @@
-module gin-quasar-admin
+module github.com/Junvary/gin-quasar-admin/GQA-BACKEND
 
 go 1.17
 
 require (
-	github.com/Junvary/gqa-plugin-example v0.0.0-20211206043750-8a89226d57d0
-	github.com/Junvary/gqa-plugin-xk v0.0.0-20211206044000-79ba25cabc5d
+	github.com/Junvary/gqa-plugin-xk v0.0.0-20220105102512-c1f8fd71f48f
 	github.com/casbin/casbin/v2 v2.39.0
-	github.com/casbin/gorm-adapter/v3 v3.4.5
+	github.com/casbin/gorm-adapter/v3 v3.4.6
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/google/uuid v1.3.0
+	github.com/gorilla/websocket v1.4.2
 	github.com/mojocn/base64Captcha v1.3.5
+	github.com/mssola/user_agent v0.5.3
 	github.com/spf13/viper v1.9.0
 	go.uber.org/zap v1.19.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gorm.io/driver/mysql v1.2.1
-	gorm.io/gorm v1.22.4
+	gorm.io/gorm v1.22.5
 )
 
 require (
@@ -39,7 +41,7 @@ require (
 	github.com/jackc/pgtype v1.9.0 // indirect
 	github.com/jackc/pgx/v4 v4.14.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
-	github.com/jinzhu/now v1.1.3 // indirect
+	github.com/jinzhu/now v1.1.4 // indirect
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
