@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/Junvary/gqa-plugin-xk v0.0.0-20220105102512-c1f8fd71f48f
-	github.com/casbin/casbin/v2 v2.39.0
+	github.com/casbin/casbin/v2 v2.41.0
 	github.com/casbin/gorm-adapter/v3 v3.4.6
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gin-gonic/gin v1.7.7
