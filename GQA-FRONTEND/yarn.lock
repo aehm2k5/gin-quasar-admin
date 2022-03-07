@@ -950,24 +950,32 @@
     source-map "^0.6.1"
     yaml-eslint-parser "^0.3.2"
 
-"@intlify/core-base@9.2.0-beta.22":
-  version "9.2.0-beta.22"
-  resolved "https://registry.npmmirror.com/@intlify/core-base/download/@intlify/core-base-9.2.0-beta.22.tgz#0a6a284770371a9b27feeace9c8448c1c5df0ae3"
-  integrity sha512-SqgQx+npGJ8XgY920FoHnvfo7Th4bEFPxOUrMquqHCHH7J/HSLV6Xppzf8wE1ZzCWjn1wmUHkavTW9ASNCXj0Q==
+"@intlify/core-base@9.2.0-beta.31":
+  version "9.2.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@intlify/core-base/-/core-base-9.2.0-beta.31.tgz#b3d6c50b7c1385ce5585ce26a634a6e52fb9fa5e"
+  integrity sha512-zSEBdCCkEE03sg+atu+yvUf+31yi1LCC2GI8eY8ffDi44G5O6SwZrt3bHybmoyBLu7/UmDgyQNySSDXbr8XmmQ==
   dependencies:
-    "@intlify/devtools-if" "9.2.0-beta.22"
-    "@intlify/message-compiler" "9.2.0-beta.22"
-    "@intlify/shared" "9.2.0-beta.22"
-    "@intlify/vue-devtools" "9.2.0-beta.22"
+    "@intlify/devtools-if" "9.2.0-beta.31"
+    "@intlify/message-compiler" "9.2.0-beta.31"
+    "@intlify/shared" "9.2.0-beta.31"
+    "@intlify/vue-devtools" "9.2.0-beta.31"
 
-"@intlify/devtools-if@9.2.0-beta.22":
-  version "9.2.0-beta.22"
-  resolved "https://registry.npmmirror.com/@intlify/devtools-if/download/@intlify/devtools-if-9.2.0-beta.22.tgz#03cabecc75b416faf790e31dc10c54655aaaedae"
-  integrity sha512-TRpig6P7hMZejDvmwTGygf+TbGUkeICnIMtNqKCMkAw78Yoc5FhgaKTCkK72Gjcmul7V9CdOF+ro/xtzY6MQGQ==
+"@intlify/devtools-if@9.2.0-beta.31":
+  version "9.2.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@intlify/devtools-if/-/devtools-if-9.2.0-beta.31.tgz#95239f9b6e65c360d3cb7c01bae84aec96325675"
+  integrity sha512-1WW2a2RQUesytJtmrFrAQdX6KVOyoqAfEqsPfIFcwqqtlNFBzm/K4ZE6a4wDqQmc755+gMfiZIJwjEUSswrl7w==
   dependencies:
-    "@intlify/shared" "9.2.0-beta.22"
+    "@intlify/shared" "9.2.0-beta.31"
 
-"@intlify/message-compiler@9.2.0-beta.22", "@intlify/message-compiler@beta":
+"@intlify/message-compiler@9.2.0-beta.31":
+  version "9.2.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@intlify/message-compiler/-/message-compiler-9.2.0-beta.31.tgz#b126b05066ba4f1a47cd6041b39c9603de6a42cc"
+  integrity sha512-5ZZBAW8I8046LG/X0jqL8C8HTmuoCgjrv1ANnlQgVc+gzP3qVWQVjHOwHeS3FO5ahCZ5cOByFvDS7f6PGbZrow==
+  dependencies:
+    "@intlify/shared" "9.2.0-beta.31"
+    source-map "0.6.1"
+
+"@intlify/message-compiler@beta":
   version "9.2.0-beta.22"
   resolved "https://registry.npmmirror.com/@intlify/message-compiler/download/@intlify/message-compiler-9.2.0-beta.22.tgz#02548ec10cff6466052116345a98d072bca4f943"
   integrity sha512-+Nx8IpKcXBQ7L+f6UWLQf/iReD7rotBkV4oxUX1rKMQgaJToYB1ovrPYNoNDd6aK4rEQ9sJoM5nd2+ENmCs7dA==
@@ -980,13 +988,18 @@
   resolved "https://registry.npmmirror.com/@intlify/shared/download/@intlify/shared-9.2.0-beta.22.tgz#26144144cd93b3100f20b370e9f1bc7b5e955b6a"
   integrity sha512-IyU9Trx1d5EZgAh6/3y0+efgko5xRw1iTwpM19qublZsTSnDSkHB8NnSyHVZrMARj+LgZgL7pKktsSO5os9k2A==
 
-"@intlify/vue-devtools@9.2.0-beta.22":
-  version "9.2.0-beta.22"
-  resolved "https://registry.npmmirror.com/@intlify/vue-devtools/download/@intlify/vue-devtools-9.2.0-beta.22.tgz#2ab42a59b243bb92fc6c96f79b5fd4dc5ce064a5"
-  integrity sha512-CZwrIFGiXl9q6Rrqyqtb3P+wwG7f0FcMvbQqJf2CnCsT7rLi4O+qbSzY5ZjN5J0bsLTfL2a4UIhxIlim4Ea+hQ==
+"@intlify/shared@9.2.0-beta.31":
+  version "9.2.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@intlify/shared/-/shared-9.2.0-beta.31.tgz#5eb657094d8ed88091bdea28c861b977821981ec"
+  integrity sha512-grc/wPNA7vGTduXWRDTED+yte/kbTVRpH/WRgLKNaakIHPyAU4oemFSOeUHoTlufU0Rv3SP1b4v8B0NVmzERGw==
+
+"@intlify/vue-devtools@9.2.0-beta.31":
+  version "9.2.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@intlify/vue-devtools/-/vue-devtools-9.2.0-beta.31.tgz#90c5c0df9480e84097d85cd17c6830787726a7da"
+  integrity sha512-V8jBdKkniJFA4BdMxEfLq/p15PJxguAR1/BrGr8BfGXSUELaiv4A1q1nNZMFnsM2uYNts4u8BgOs2Oc+e0MewQ==
   dependencies:
-    "@intlify/core-base" "9.2.0-beta.22"
-    "@intlify/shared" "9.2.0-beta.22"
+    "@intlify/core-base" "9.2.0-beta.31"
+    "@intlify/shared" "9.2.0-beta.31"
 
 "@intlify/vue-i18n-loader@^4.0.1":
   version "4.0.1"
@@ -1352,12 +1365,7 @@
     "@vue/compiler-dom" "3.2.26"
     "@vue/shared" "3.2.26"
 
-"@vue/devtools-api@^6.0.0-beta.11", "@vue/devtools-api@^6.0.0-beta.18":
-  version "6.0.0-beta.19"
-  resolved "https://registry.npmmirror.com/@vue/devtools-api/download/@vue/devtools-api-6.0.0-beta.19.tgz#f8e88059daa424515992426a0c7ea5cde07e99bf"
-  integrity sha1-+OiAWdqkJFFZkkJqDH6lzeB+mb8=
-
-"@vue/devtools-api@^6.0.0-beta.13":
+"@vue/devtools-api@^6.0.0-beta.11", "@vue/devtools-api@^6.0.0-beta.13", "@vue/devtools-api@^6.0.0-beta.18":
   version "6.0.0-beta.20.1"
   resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.0.0-beta.20.1.tgz#5b499647e929c35baf2a66a399578f9aa4601142"
   integrity sha512-R2rfiRY+kZugzWh9ZyITaovx+jpU4vgivAEAiz80kvh3yviiTU3CBuGuyWpSwGz9/C7TkSWVM/FtQRGlZ16n8Q==
@@ -6032,14 +6040,14 @@ vendors@^1.0.3:
   resolved "https://registry.npm.taobao.org/vendors/download/vendors-1.0.4.tgz?cache=0&sync_timestamp=1615203397897&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvendors%2Fdownload%2Fvendors-1.0.4.tgz#e2b800a53e7a29b93506c3cf41100d16c4c4ad8e"
   integrity sha1-4rgApT56Kbk1BsPPQRANFsTErY4=
 
-vue-i18n@^9.2.0-beta.22:
-  version "9.2.0-beta.22"
-  resolved "https://registry.npmmirror.com/vue-i18n/download/vue-i18n-9.2.0-beta.22.tgz#f0a90fa578e9aaf40adb9b6a37d0b2986a0e8912"
-  integrity sha512-XnkGLhC1ESZYiCpWnTkAsc3/z8p2ntu5dmQjp9M0hhOZi5w8JZ8VQieJiiq5MFlqjVeIxNkGMn6HM0hvC4xtFA==
+vue-i18n@^9.2.0-beta.31:
+  version "9.2.0-beta.31"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-9.2.0-beta.31.tgz#b6625539a2b9bcc619e210a12f71d393579defdc"
+  integrity sha512-t4hhPPqjpHEQRvXV09NJouEucT/s7gsRVW7aGuRKszKrn2itHqEzqnI8btf6veIZzKJxjb82POBTaKmYqpjmEg==
   dependencies:
-    "@intlify/core-base" "9.2.0-beta.22"
-    "@intlify/shared" "9.2.0-beta.22"
-    "@intlify/vue-devtools" "9.2.0-beta.22"
+    "@intlify/core-base" "9.2.0-beta.31"
+    "@intlify/shared" "9.2.0-beta.31"
+    "@intlify/vue-devtools" "9.2.0-beta.31"
     "@vue/devtools-api" "^6.0.0-beta.13"
 
 vue-loader@16.8.3:
