@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "@quasar/extras": "^1.12.5",
-        "axios": "^0.21.1",
+        "axios": "^0.26.1",
         "core-js": "^3.6.5",
         "echarts": "^5.2.2",
         "mitt": "^3.0.0",
