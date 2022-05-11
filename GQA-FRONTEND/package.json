@@ -6,24 +6,28 @@
     "author": "Junvary <junvary@foxmail.com>",
     "private": true,
     "scripts": {
+        "dev": "quasar dev",
+        "build": "quasar build",
         "test": "echo \"No test specified\" && exit 0"
     },
     "dependencies": {
-        "@quasar/extras": "^1.12.5",
+        "@quasar/extras": "^1.13.6",
         "axios": "^0.21.1",
-        "core-js": "^3.6.5",
-        "echarts": "^5.2.2",
+        "core-js": "^3.22.5",
+        "echarts": "^5.3.2",
         "mitt": "^3.0.0",
-        "quasar": "^2.5.5",
+        "pinia": "^2.0.11",
+        "quasar": "^2.6.0",
         "vue": "^3.0.0",
-        "vue-i18n": "^9.2.0-beta.22",
+        "vue-i18n": "^9.0.0",
         "vue-router": "^4.0.0",
-        "vuex": "^4.0.1",
-        "xe-utils": "^3.4.3"
+        "vue3-print-nb": "^0.1.4",
+        "xe-utils": "^3.5.4"
     },
     "devDependencies": {
-        "@intlify/vue-i18n-loader": "^4.0.1",
-        "@quasar/app": "^3.3.3"
+        "@quasar/app-webpack": "^3.0.0",
+        "@quasar/quasar-app-extension-qiconpicker": "^2.0.6",
+        "quasar-app-extension-qhierarchy": "^1.0.0"
     },
     "browserslist": [
         "last 10 Chrome versions",
