@@ -1,7 +1,10 @@
 import { boot } from 'quasar/wrappers'
 import { LoadingBar, Loading, QSpinnerGears } from 'quasar'
-import { Allowlist } from 'src/settings'
+// import { Allowlist } from 'src/settings'
 // import { GetToken } from 'src/utils/cookies'
+import { useUserStore } from 'src/stores/user'
+import { usePermissionStore } from 'src/stores/permission'
+import useCommon from 'src/composables/useCommon'
 
 LoadingBar.setDefaults({
     color: 'red',
@@ -26,15 +29,18 @@ function stopLoading() {
 
 export default boot(({ router, store }) => {
     router.beforeEach((to, from, next) => {
+        const userStore = useUserStore()
+        const permissionStore = usePermissionStore()
         startLoading()
-        const token = store.getters['user/token']
+        const token = userStore.GetToken()
+        const { AllowList } = useCommon()
         if (token) {
-            if (Allowlist.indexOf(to.path) !== -1) {
+            if (AllowList.indexOf(to.path) !== -1) {
                 next({ path: '/' })
                 stopLoading()
             } else {
-                if (!store.getters['permission/userMenu'].length) {
-                    store.dispatch('permission/GetUserMenu').then(res => {
+                if (!permissionStore.userMenu.length) {
+                    permissionStore.GetUserMenu().then(res => {
                         // 在vue-router4中，addRoutes被废弃，改为了addRoute，循环调用
                         // 动态添加鉴权路由表
                         if (res) {
@@ -53,7 +59,7 @@ export default boot(({ router, store }) => {
                 stopLoading()
             }
         } else {
-            if (Allowlist.indexOf(to.path) !== -1) {
+            if (AllowList.indexOf(to.path) !== -1) {
                 next()
                 stopLoading()
             } else {

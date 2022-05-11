@@ -6,13 +6,13 @@
                     <div class="row justify-center" style="width: 100%">
                         <div class="column items-center q-gutter-y-md">
                             <div class="col">
-                                <GqaAvatar size="xl" :src="gqaFrontend.gqaWebLogo" />
+                                <GqaAvatar size="xl" :src="gqaFrontend.logo" />
                             </div>
                             <div class="col" style="font-size: 35px; font-weight: bold;letter-spacing: 5px;">
-                                {{ gqaFrontend.gqaSubTitle }}
+                                {{ gqaFrontend.subTitle }}
                             </div>
                             <span class="col" style="text-transform: capitalize;">
-                                {{ gqaFrontend.gqaDescribe }}
+                                {{ gqaFrontend.webDescribe }}
                             </span>
                         </div>
                     </div>
@@ -32,27 +32,26 @@
                         </span>
                     </div>
                 </div>
-
             </q-img>
         </div>
-        <div v-else class="gin-quasar-admin-banner" style="padding-top: 50px; padding-bottom: 30px;">
+        <div v-else class="gin-quasar-admin-banner" style="padding-top: 30px; height: 25vh;">
             <div class="row justify-center">
                 <div class="column items-center q-gutter-y-md">
                     <div class="col">
-                        <GqaAvatar size="xl" :src="gqaFrontend.gqaWebLogo" />
+                        <GqaAvatar size="xl" :src="gqaFrontend.logo" />
                     </div>
                     <div class="col" style="font-size: 35px; font-weight: bold;letter-spacing: 5px;">
-                        {{ gqaFrontend.gqaSubTitle }}
+                        {{ gqaFrontend.subTitle }}
                     </div>
                     <span class="col" style="text-transform: capitalize;">
-                        {{ gqaFrontend.gqaDescribe }}
+                        {{ gqaFrontend.webDescribe }}
                     </span>
                 </div>
             </div>
 
             <q-separator />
 
-            <div class="column items-center" style="margin-top: 20px">
+            <div class="column items-center" style="width: 100%">
                 <span class="col">
                     {{ $t('TechnicalSupport') }}: {{ thisYear }}
                 </span>
@@ -68,45 +67,27 @@
     </footer>
 </template>
 
-<script>
-import { gqaFrontendMixin } from 'src/mixins/gqaFrontendMixin'
-import GqaAvatar from 'src/components/GqaAvatar'
+<script setup>
+import { computed, ref } from 'vue';
+import GqaAvatar from 'src/components/GqaAvatar/index.vue'
+import { useStorageStore } from 'src/stores/storage'
 
-export default {
-    name: 'PageFooter',
-    mixins: [gqaFrontendMixin],
-    computed: {
-        bannerImage() {
-            if (this.gqaFrontend.gqaBannerImage && this.gqaFrontend.gqaBannerImage.substring(0, 11) === 'gqa-upload:') {
-                return process.env.API + this.gqaFrontend.gqaBannerImage.substring(11)
-            }
-            return ''
-        },
-    },
-    components: {
-        GqaAvatar,
-    },
-    data() {
-        return {
-            thisYear: new Date(),
-        }
-    },
-    mounted() {
-        this.getThisYear()
-    },
-    methods: {
-        getThisYear() {
-            const year = new Date()
-            this.thisYear = year.getFullYear()
-        },
-    },
-}
+const storageStore = useStorageStore()
+const thisYear = ref(new Date().getFullYear());
+const gqaFrontend = computed(() => storageStore.GetGqaFrontend())
+const bannerImage = computed(() => {
+    if (gqaFrontend.value.bannerImage && gqaFrontend.value.bannerImage.substring(0, 11) === 'gqa-upload:') {
+        return process.env.API + gqaFrontend.value.bannerImage.substring(11)
+    }
+    return ''
+})
+
 </script>
 
 <style lang="scss" scoped>
 footer {
     position: relative;
-    z-index: 1;
+    z-index: 0;
     overflow: hidden;
     color: #ffffff;
 }
